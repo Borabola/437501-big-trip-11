@@ -17,6 +17,7 @@ const createTripInfoTemplate = () => {
           </section>`
   );
 };
+
 const createTripControlsTemplate = () => {
   return (
     `<nav class="trip-controls__trip-tabs  trip-tabs">
@@ -343,7 +344,6 @@ const creatDayListTemplate = () => {
   return dayList;
 };
 
-
 render(tripMainInfo, createTripInfoTemplate(), `afterBegin`);
 
 if (tripMainInfo.children[0]) {
@@ -353,7 +353,7 @@ render(tripControlBlock.children[0], createTripControlsTemplate(), `afterEnd`);
 render(tripControlBlock, createTripFiltersTemplate(), `beforeend`);
 render(tripEventSection.children[0], createTripSortTemplate(), `afterEnd`);
 render(tripEventSection.children[1], createEventEditTemplate(), `afterEnd`);
-/*if (DAY_COUNT > 0) {
+/* if (DAY_COUNT > 0) {
   render(tripEventSection, creatDayListTemplate(), `beforeend`);
 }*/
 tripEventSection.appendChild(creatDayListTemplate());
