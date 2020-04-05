@@ -327,7 +327,7 @@ const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
-const creatDayListTemplate = () => {
+const createDayListTemplate = () => {
   let dayContent = ``;
 
   for (let i = 0; i < DAY_COUNT; i++) {
@@ -354,5 +354,5 @@ render(tripEventSection.children[0], createTripSortTemplate(), `afterEnd`);
 render(tripEventSection.children[1], createEventEditTemplate(), `afterEnd`);
 
 if (DAY_COUNT > 0) {
-  render(tripEventSection, creatDayListTemplate(), `beforeEnd`);
+  render(tripEventSection, createDayListTemplate(), `beforeEnd`);
 }
