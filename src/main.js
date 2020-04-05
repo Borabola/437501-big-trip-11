@@ -311,37 +311,23 @@ const createTripEventsItemTemplate = () => {
   );
 };
 
-const creatTripDaysItemTemplate = () => {
-  return (
-    `<li class="trip-days__item  day">
-              <div class="day__info">
-                <span class="day__counter">1</span>
-                <time class="day__date" datetime="2019-03-18">MAR 18</time>
-              </div>
-
-              <ul class="trip-events__list"></ul>`
-  );
-};
-
-
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
 const creatDayListTemplate = () => {
-  const dayList = document.createElement(`ul`);
-  dayList.className = `trip-days`;
-  for (let i = 0; i < DAY_COUNT; i++) {
-    render(dayList, creatTripDaysItemTemplate(), `beforeend`);
-    if (POINT_COUNT > 0) {
-      for (let j = 0; j < POINT_COUNT; j++) {
-        const tripEventItem = document.createElement(`li`);
-        tripEventItem.className = `trip-events__item`;
-        render(dayList.children[0].children[1], createTripEventsItemTemplate(), `beforeend`);
-      }
-    }
-  }
-  return dayList;
+  return (
+    `<ul class="trip-days">
+            <li class="trip-days__item  day">
+              <div class="day__info">
+                <span class="day__counter">1</span>
+                <time class="day__date" datetime="2019-03-18">MAR 18</time>
+              </div>
+
+              <ul class="trip-events__list"></ul>
+            </li>
+    </ul>`
+  );
 };
 
 render(tripMainInfo, createTripInfoTemplate(), `afterBegin`);
@@ -353,7 +339,10 @@ render(tripControlBlock.children[0], createTripControlsTemplate(), `afterEnd`);
 render(tripControlBlock, createTripFiltersTemplate(), `beforeend`);
 render(tripEventSection.children[0], createTripSortTemplate(), `afterEnd`);
 render(tripEventSection.children[1], createEventEditTemplate(), `afterEnd`);
-/* if (DAY_COUNT > 0) {
-  render(tripEventSection, creatDayListTemplate(), `beforeend`);
-}*/
-tripEventSection.appendChild(creatDayListTemplate());
+render(tripEventSection, creatDayListTemplate(), `beforeEnd`);
+
+const tripEventList = tripEventSection.querySelector(`.trip-events__list`);
+
+for (let i = 0; i < POINT_COUNT; i++) {
+  render(tripEventList, createTripEventsItemTemplate(), `beforeEnd`);
+}
