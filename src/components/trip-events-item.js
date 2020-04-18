@@ -1,10 +1,15 @@
-import {generateType, generateCity, createOfferListTemplte} from "../mock/event";
+import {generateType, generateCity, createOfferListTemplte, MAX_OFFER_PRICE, MIN_OFFER_PRICE, getRandomIntegerNumber} from "../mock/event";
+
+
 
 export const createTripEventsItemTemplate = () => {
   const type = generateType();
   const city = generateCity();
-  const offerList = createOfferListTemplte();
+  console.log(type.type);
+  const offerList = createOfferListTemplte(type.type);
 
+  const price = getRandomIntegerNumber(MIN_OFFER_PRICE / 10, MAX_OFFER_PRICE / 10) * 10;
+  console.log(price);
   return (
     `<li class="trip-events__item">
        <div class="event">
@@ -23,7 +28,7 @@ export const createTripEventsItemTemplate = () => {
          </div>
 
          <p class="event__price">
-           &euro;&nbsp;<span class="event__price-value">20</span>
+           &euro;&nbsp;<span class="event__price-value">${price}</span>
          </p>
 
          <h4 class="visually-hidden">Offers:</h4>
