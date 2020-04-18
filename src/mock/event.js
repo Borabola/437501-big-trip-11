@@ -1,7 +1,7 @@
 const OFFER_COUNT_MAX = 5;
 const MIN_OFFER_PRICE = 10;
 const MAX_OFFER_PRICE = 1000;
-
+const YEAR = 20;
 
 const TYPES = [
   {
@@ -117,6 +117,22 @@ const TRANSPORT__OFFERS = [
   },
 ];
 
+const MONTH_NAMES = [
+  `JAN`,
+  `FEB`,
+  `MAR`,
+  `APR`,
+  `MAY`,
+  `JUN`,
+  `JUL`,
+  `AUG`,
+  `SEP`,
+  `OCT`,
+  `NOV`,
+  `DES`,
+];
+
+
 const getRandomIntegerNumber = (min, max) => {
   return min + Math.floor(Math.random() * (max - min));
 };
@@ -126,35 +142,14 @@ const getRandomArrayItem = (array) => {
   return array[randomIndex];
 };
 
-const shuffle = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const temp = array[j];
-    array[j] = array[i];
-    array[i] = temp;
-  }
-  return array;
-};
-
-
-const createOfferTemplte = (offer, offerPrice) => {
-  return (`<li class="event__offer">
-             <span class="event__offer-title">${offer}</span>
-             &plus;
-             &euro;&nbsp;<span class="event__offer-price">${offerPrice}</span>
-            </li>`);
-};
-
-const createOfferListTemplte = (type) => {
-  const iMax = getRandomIntegerNumber(0, OFFER_COUNT_MAX);
-  const randomOffers = (type === `place`) ? shuffle(PLACE_OFFERS) : shuffle(TRANSPORT__OFFERS);
-  let offerListContent = ``;
-  for (let i = 0; i < iMax; i++) {
-    offerListContent += createOfferTemplte(randomOffers[i].name, randomOffers[i].price);
-  }
-  return (
-    `<ul class="event__selected-offers">${offerListContent}</ul>`
-  );
+const generateStartDate = () => {
+  const monthRandom = getRandomArrayItem(MONTH_NAMES);
+  return {
+    day: getRandomIntegerNumber(1, 31),
+    month: monthRandom,
+    monthNumber: MONTH_NAMES.indexOf(monthRandom),
+    year: YEAR,
+  };
 };
 
 const generateType = () => {
@@ -173,4 +168,14 @@ const generateCity = () => {
   };
 };
 
-export {generateType, generateCity, createOfferListTemplte, MAX_OFFER_PRICE, MIN_OFFER_PRICE, getRandomIntegerNumber};
+export {
+  generateType,
+  generateCity,
+  generateStartDate,
+  MAX_OFFER_PRICE,
+  MIN_OFFER_PRICE,
+  getRandomIntegerNumber,
+  TRANSPORT__OFFERS,
+  PLACE_OFFERS,
+  OFFER_COUNT_MAX
+};

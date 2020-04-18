@@ -1,2 +1,13 @@
-export const DAY_COUNT = 1;
-export const POINT_COUNT = 3;
+export const DAY_COUNT = 2;
+export const POINT_COUNT = 10;
+
+const castTimeFormat = (value) => {
+  return value < 10 ? `0${value}` : String(value);
+};
+
+export const formatTime = (date) => {
+  const hours = castTimeFormat(date.getHours() % 12);
+  const minutes = castTimeFormat(date.getMinutes());
+
+  return `${hours}:${minutes}`;
+};

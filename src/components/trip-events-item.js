@@ -1,6 +1,34 @@
-import {generateType, generateCity, createOfferListTemplte, MAX_OFFER_PRICE, MIN_OFFER_PRICE, getRandomIntegerNumber} from "../mock/event";
+import {generateType, generateCity, MAX_OFFER_PRICE, MIN_OFFER_PRICE, getRandomIntegerNumber, TRANSPORT__OFFERS, PLACE_OFFERS, OFFER_COUNT_MAX} from "../mock/event";
 
+const shuffle = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = array[j];
+    array[j] = array[i];
+    array[i] = temp;
+  }
+  return array;
+};
 
+const createOfferTemplte = (offer, offerPrice) => {
+  return (`<li class="event__offer">
+             <span class="event__offer-title">${offer}</span>
+             &plus;
+             &euro;&nbsp;<span class="event__offer-price">${offerPrice}</span>
+            </li>`);
+};
+
+const createOfferListTemplte = (type) => {
+  const iMax = getRandomIntegerNumber(0, OFFER_COUNT_MAX);
+  const randomOffers = (type === `place`) ? shuffle(PLACE_OFFERS) : shuffle(TRANSPORT__OFFERS);
+  let offerListContent = ``;
+  for (let i = 0; i < iMax; i++) {
+    offerListContent += createOfferTemplte(randomOffers[i].name, randomOffers[i].price);
+  }
+  return (
+    `<ul class="event__selected-offers">${offerListContent}</ul>`
+  );
+};
 
 export const createTripEventsItemTemplate = () => {
   const type = generateType();

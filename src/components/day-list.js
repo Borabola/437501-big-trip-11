@@ -11,7 +11,7 @@ export const createDayListTemplate = () => {
     for (let j = 0; j < POINT_COUNT; j++) {
       pointsContent += createTripEventsItemTemplate();
     }
-    dayContent += createTripDaysItemTemplate(pointsContent);
+    dayContent += createTripDaysItemTemplate(pointsContent, i);
   }
 
   return (
