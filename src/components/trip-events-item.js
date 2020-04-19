@@ -1,4 +1,8 @@
 import {generateType, generateCity, MAX_OFFER_PRICE, MIN_OFFER_PRICE, getRandomIntegerNumber, TRANSPORT__OFFERS, PLACE_OFFERS, OFFER_COUNT_MAX} from "../mock/event";
+import {startDate} from "./trip-days-item";
+import {generateEventTime} from "../mock/time";
+
+
 
 const shuffle = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
@@ -33,6 +37,8 @@ const createOfferListTemplte = (type) => {
 export const createTripEventsItemTemplate = () => {
   const type = generateType();
   const city = generateCity();
+  const timeEvent = generateEventTime();
+  console.log(timeEvent);
   console.log(type.type);
   const offerList = createOfferListTemplte(type.type);
 
@@ -48,11 +54,11 @@ export const createTripEventsItemTemplate = () => {
 
          <div class="event__schedule">
            <p class="event__time">
-             <time class="event__start-time" datetime="2019-03-18T10:30">10:30</time>
+             <time class="event__start-time" datetime="20${startDate.year}-${startDate.monthNumber}-${startDate.day}T ${timeEvent.start}">${timeEvent.start}</time>
              &mdash;
-             <time class="event__end-time" datetime="2019-03-18T11:00">11:00</time>
+             <time class="event__end-time" datetime="20${startDate.year}-${startDate.monthNumber}-${startDate.day}T11:00">11:00</time>
            </p>
-           <p class="event__duration">30M</p>
+           <p class="event__duration">${timeEvent.durationLine}</p>
          </div>
 
          <p class="event__price">

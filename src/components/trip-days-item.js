@@ -2,7 +2,7 @@ import {generateStartDate} from "../mock/event";
 
 const startDate = generateStartDate();
 console.log(startDate);
-export const createTripDaysItemTemplate = (tripEventsList, i) => {
+const createTripDaysItemTemplate = (tripEventsList, i) => {
   return (
     `<li class="trip-days__item  day">
       <div class="day__info">
@@ -15,3 +15,5 @@ export const createTripDaysItemTemplate = (tripEventsList, i) => {
 `
   );
 };
+
+export {startDate, createTripDaysItemTemplate};

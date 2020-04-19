@@ -1,7 +1,7 @@
 export const DAY_COUNT = 2;
 export const POINT_COUNT = 10;
 
-const castTimeFormat = (value) => {
+/* const castTimeFormat = (value) => {
   return value < 10 ? `0${value}` : String(value);
 };
 
@@ -10,4 +10,4 @@ export const formatTime = (date) => {
   const minutes = castTimeFormat(date.getMinutes());
 
   return `${hours}:${minutes}`;
-};
+};*/
