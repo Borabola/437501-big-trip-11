@@ -1,3 +1,5 @@
+import {generateEventTime} from "./time";
+
 const OFFER_COUNT_MAX = 5;
 const MIN_OFFER_PRICE = 10;
 const MAX_OFFER_PRICE = 1000;
@@ -108,12 +110,16 @@ const TRANSPORT__OFFERS = [
     price: 200,
   },
   {
-    name: `Add breakfast`,
-    price: 50,
+    name: `Add meal`,
+    price: 15,
   },
   {
     name: `Order Uber`,
     price: 20,
+  },
+  {
+    name: `Choose seats`,
+    price: 5,
   },
 ];
 
@@ -152,7 +158,7 @@ const generateStartDate = () => {
   };
 };
 
-const generateType = () => {
+/*const generateType = () => {
   const type = getRandomArrayItem(TYPES);
   return {
     name: type.name,
@@ -160,20 +166,42 @@ const generateType = () => {
     icon: type.icon,
     title: type.title
   };
-};
+}; */
 
-const generateCity = () => {
+/*const generateCity = () => {
   return {
     city: getRandomArrayItem(CITIES),
   };
-};
+};*/
 
+
+const generateEvent = () => {
+  const type = getRandomArrayItem(TYPES);
+  // const monthRandom = getRandomArrayItem(MONTH_NAMES);
+  const time = generateEventTime();
+  return {
+    type: {
+      name: type.name,
+      type: type.type,
+      icon: type.icon,
+      title: type.title
+    },
+    city: getRandomArrayItem(CITIES),
+    price: getRandomIntegerNumber(MIN_OFFER_PRICE / 10, MAX_OFFER_PRICE / 10) * 10,
+    timeEvent: {
+      start: time.start,
+      finish: time.finish,
+      durationLine: time.durationLine,
+    },
+  }
+};
 export {
-  generateType,
-  generateCity,
+  //generateType,
+  //generateCity,
   generateStartDate,
-  MAX_OFFER_PRICE,
-  MIN_OFFER_PRICE,
+  //MAX_OFFER_PRICE,
+  //MIN_OFFER_PRICE,
+  generateEvent,
   getRandomIntegerNumber,
   TRANSPORT__OFFERS,
   PLACE_OFFERS,

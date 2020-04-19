@@ -13,8 +13,6 @@ export const generateEventTime = () => {
   };
   const finishTime = startTime + duration;
   return {
-    startTime,
-    duration,
     start: Math.floor(startTime / 60) + `:` + (startTime - Math.floor(startTime / 60) * 60),
     finish: Math.floor(finishTime / 60) + `:` + (finishTime - Math.floor(finishTime / 60) * 60),
     durationLine: getDurationLine()

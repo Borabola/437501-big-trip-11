@@ -1,4 +1,5 @@
-import {generateType, generateCity, MAX_OFFER_PRICE, MIN_OFFER_PRICE, getRandomIntegerNumber, TRANSPORT__OFFERS, PLACE_OFFERS, OFFER_COUNT_MAX} from "../mock/event";
+//import {generateType, generateCity, MAX_OFFER_PRICE, MIN_OFFER_PRICE, getRandomIntegerNumber, TRANSPORT__OFFERS, PLACE_OFFERS, OFFER_COUNT_MAX} from "../mock/event";
+import {generateEvent, getRandomIntegerNumber, TRANSPORT__OFFERS, PLACE_OFFERS, OFFER_COUNT_MAX} from "../mock/event";
 import {startDate} from "./trip-days-item";
 import {generateEventTime} from "../mock/time";
 
@@ -34,35 +35,38 @@ const createOfferListTemplte = (type) => {
   );
 };
 
-export const createTripEventsItemTemplate = () => {
-  const type = generateType();
-  const city = generateCity();
-  const timeEvent = generateEventTime();
-  console.log(timeEvent);
-  console.log(type.type);
-  const offerList = createOfferListTemplte(type.type);
 
-  const price = getRandomIntegerNumber(MIN_OFFER_PRICE / 10, MAX_OFFER_PRICE / 10) * 10;
-  console.log(price);
+export const createTripEventsItemTemplate = () => {
+  const event = generateEvent();
+  console.log(event);
+  //const type = generateType();
+  //const city = generateCity();
+  const timeEvent = generateEventTime();
+  //console.log(timeEvent);
+  //console.log(type.type);
+  const offerList = createOfferListTemplte(event.type.type);
+
+  //const price = getRandomIntegerNumber(MIN_OFFER_PRICE / 10, MAX_OFFER_PRICE / 10) * 10;
+  //console.log(price);
   return (
     `<li class="trip-events__item">
        <div class="event">
          <div class="event__type">
-           <img class="event__type-icon" width="42" height="42" src="${type.icon}" alt="${type.name} icon">
+           <img class="event__type-icon" width="42" height="42" src="${event.type.icon}" alt="${event.type.name} icon">
          </div>
-         <h3 class="event__title">${type.title} ${city.city}</h3>
+         <h3 class="event__title">${event.type.title} ${event.city}</h3>
 
          <div class="event__schedule">
            <p class="event__time">
-             <time class="event__start-time" datetime="20${startDate.year}-${startDate.monthNumber}-${startDate.day}T ${timeEvent.start}">${timeEvent.start}</time>
+             <time class="event__start-time" datetime="20${startDate.year}-${startDate.monthNumber}-${startDate.day}T ${event.timeEvent.start}">${event.timeEvent.start}</time>
              &mdash;
-             <time class="event__end-time" datetime="20${startDate.year}-${startDate.monthNumber}-${startDate.day}T11:00">11:00</time>
+             <time class="event__end-time" datetime="20${startDate.year}-${startDate.monthNumber}-${startDate.day}T${event.timeEvent.finish}">${event.timeEvent.finish}</time>
            </p>
-           <p class="event__duration">${timeEvent.durationLine}</p>
+           <p class="event__duration">${event.timeEvent.durationLine}</p>
          </div>
 
          <p class="event__price">
-           &euro;&nbsp;<span class="event__price-value">${price}</span>
+           &euro;&nbsp;<span class="event__price-value">${event.price}</span>
          </p>
 
          <h4 class="visually-hidden">Offers:</h4>
