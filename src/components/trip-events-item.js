@@ -1,19 +1,8 @@
-//import {generateType, generateCity, MAX_OFFER_PRICE, MIN_OFFER_PRICE, getRandomIntegerNumber, TRANSPORT__OFFERS, PLACE_OFFERS, OFFER_COUNT_MAX} from "../mock/event";
-import {generateEvent, getRandomIntegerNumber, TRANSPORT__OFFERS, PLACE_OFFERS, OFFER_COUNT_MAX} from "../mock/event";
+// import {generateType, generateCity, MAX_OFFER_PRICE, MIN_OFFER_PRICE, getRandomIntegerNumber, TRANSPORT__OFFERS, PLACE_OFFERS, OFFER_COUNT_MAX} from "../mock/event";
+// import {generateEvent, generateEvents ,getRandomIntegerNumber, TRANSPORT__OFFERS, PLACE_OFFERS, OFFER_COUNT_MAX} from "../mock/event";
 import {startDate} from "./trip-days-item";
 import {generateEventTime} from "../mock/time";
 
-
-
-const shuffle = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const temp = array[j];
-    array[j] = array[i];
-    array[i] = temp;
-  }
-  return array;
-};
 
 const createOfferTemplte = (offer, offerPrice) => {
   return (`<li class="event__offer">
@@ -23,12 +12,10 @@ const createOfferTemplte = (offer, offerPrice) => {
             </li>`);
 };
 
-const createOfferListTemplte = (type) => {
-  const iMax = getRandomIntegerNumber(0, OFFER_COUNT_MAX);
-  const randomOffers = (type === `place`) ? shuffle(PLACE_OFFERS) : shuffle(TRANSPORT__OFFERS);
+const createOfferListTemplte = (event) => {
   let offerListContent = ``;
-  for (let i = 0; i < iMax; i++) {
-    offerListContent += createOfferTemplte(randomOffers[i].name, randomOffers[i].price);
+  for (let i = 0; i < event.offers.length; i++) {
+    offerListContent += createOfferTemplte(event.offers[i].name, event.offers[i].price);
   }
   return (
     `<ul class="event__selected-offers">${offerListContent}</ul>`
@@ -36,18 +23,18 @@ const createOfferListTemplte = (type) => {
 };
 
 
-export const createTripEventsItemTemplate = () => {
-  const event = generateEvent();
-  console.log(event);
-  //const type = generateType();
-  //const city = generateCity();
-  const timeEvent = generateEventTime();
-  //console.log(timeEvent);
-  //console.log(type.type);
-  const offerList = createOfferListTemplte(event.type.type);
+export const createTripEventsItemTemplate = (event) => {
+  // const event = generateEvent();
+  // console.log(event);
+  // const type = generateType();
+  // const city = generateCity();
+  // const timeEvent = generateEventTime();
+  // console.log(timeEvent);
+  // console.log(type.type);
+  const offerList = createOfferListTemplte(event);
 
-  //const price = getRandomIntegerNumber(MIN_OFFER_PRICE / 10, MAX_OFFER_PRICE / 10) * 10;
-  //console.log(price);
+  // const price = getRandomIntegerNumber(MIN_OFFER_PRICE / 10, MAX_OFFER_PRICE / 10) * 10;
+  // console.log(price);
   return (
     `<li class="trip-events__item">
        <div class="event">
