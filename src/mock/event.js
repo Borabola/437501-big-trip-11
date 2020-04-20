@@ -162,7 +162,7 @@ const generateStartDate = () => {
   };
 };
 
-/*const generateType = () => {
+/* const generateType = () => {
   const type = getRandomArrayItem(TYPES);
   return {
     name: type.name,
@@ -172,7 +172,7 @@ const generateStartDate = () => {
   };
 }; */
 
-/*const generateCity = () => {
+/* const generateCity = () => {
   return {
     city: getRandomArrayItem(CITIES),
   };
@@ -190,8 +190,7 @@ const shuffle = (array) => {
 
 const generateOfferList = (type) => {
   const iMax = getRandomIntegerNumber(0, OFFER_COUNT_MAX);
-  let randomOffers = [];
-  return randomOffers = (type === `Activity`) ? shuffle(PLACE_OFFERS).slice(0, iMax) : shuffle(TRANSPORT__OFFERS).slice(0, iMax);
+  return (type === `Activity`) ? shuffle(PLACE_OFFERS).slice(0, iMax) : shuffle(TRANSPORT__OFFERS).slice(0, iMax);
 };
 
 const generateImgs = () => {
@@ -236,7 +235,7 @@ const generateEvent = () => {
     offers,
     imgs,
     descriptionText,
-    };
+  };
 };
 
 const generateEvents = (count) => {
@@ -246,11 +245,7 @@ const generateEvents = (count) => {
 };
 
 export {
-  //generateType,
-  //generateCity,
   generateStartDate,
-  //MAX_OFFER_PRICE,
-  //MIN_OFFER_PRICE,
   generateEvent,
   generateEvents,
   getRandomIntegerNumber,

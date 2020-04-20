@@ -6,7 +6,7 @@ import {getRandomIntegerNumber} from "./event";
 
 export const generateEventTime = () => {
   const startTime = getRandomIntegerNumber(0, 1440);
-  const duration = getRandomIntegerNumber(0, 300);  // до 5 часов
+  const duration = getRandomIntegerNumber(0, 300); // до 5 часов
   const getDurationLine = () => {
     return (
       (duration <= 59) ? `${duration}M` : Math.floor(duration / 60) + `H ` + (duration - Math.floor(duration / 60) * 60) + `M`);

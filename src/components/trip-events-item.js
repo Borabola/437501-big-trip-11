@@ -1,7 +1,4 @@
-// import {generateType, generateCity, MAX_OFFER_PRICE, MIN_OFFER_PRICE, getRandomIntegerNumber, TRANSPORT__OFFERS, PLACE_OFFERS, OFFER_COUNT_MAX} from "../mock/event";
-// import {generateEvent, generateEvents ,getRandomIntegerNumber, TRANSPORT__OFFERS, PLACE_OFFERS, OFFER_COUNT_MAX} from "../mock/event";
 import {startDate} from "./trip-days-item";
-import {generateEventTime} from "../mock/time";
 
 
 const createOfferTemplte = (offer, offerPrice) => {
