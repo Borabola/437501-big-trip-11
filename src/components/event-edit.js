@@ -5,22 +5,10 @@ const event = generateEvent();
 
 const createOfferItem = (offer) => {
   let isChecked = ``;
-  /* console.log(`event.offers`);
-  console.log(event.offers);
-  let isOffer = event.offers.find(offer);
-  console.log(`isOffer`);
-  console.log(isOffer);*/
+  if (event.offers.length > 0) {
+    isChecked = (event.offers.find((item) => item.name === offer.name)) ? `checked` : ``;
+  }
 
-  /* let eventOfferNames = event.offers.reduce(function (prev, curr) {
-    return [...prev, ...curr.name];
-  });
-  console.log(`eventOfferNames`);
-  console.log(eventOfferNames);
-  /*if (event.offers.length > 0) {
-
-    isChecked = (event.offers.name.indexOf(offer.name) > -1) ? `checked` : ``;
-  };*/
-  // const isChecked = (`checked`);
   return (
     `<div class="event__offer-selector">
               <input class="event__offer-checkbox  visually-hidden" id="event-offer-seats-1" type="checkbox" name="event-offer-seats" ${isChecked}>

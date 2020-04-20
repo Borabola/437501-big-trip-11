@@ -157,7 +157,7 @@ const generateStartDate = () => {
   return {
     day: getRandomIntegerNumber(1, 31),
     month: monthRandom,
-    monthNumber: MONTH_NAMES.indexOf(monthRandom),
+    monthNumber: MONTH_NAMES.indexOf(monthRandom) + 1,
     year: YEAR,
   };
 };
@@ -204,15 +204,13 @@ const generateImgs = () => {
   return imgs;
 };
 
-/*const generateDescription = () => {
-  const sentenceCount = getRandomIntegerNumber(0, MAX_SENTENCE_COUNT);
-  //const newDescriptions = descriptions.split(`. `).shift(sentenceCount);
-  const newDescriptions = descriptions.split(`. `).splice(sentenceCount, descriptions.length);
-  //let descriptionText =``;
+const generateDescription = () => {
+  const sentenceCount = getRandomIntegerNumber(1, MAX_SENTENCE_COUNT);
+  const newDescriptions = descriptions[0].split(`. `).slice(0, sentenceCount);
   return (
-    newDescriptions.join(' ');
-    //descriptionText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget.`;
-};*/
+    newDescriptions.join(`. `) + `.`
+  );
+};
 
 const generateEvent = () => {
   const type = getRandomArrayItem(TYPES);
@@ -220,7 +218,7 @@ const generateEvent = () => {
   const time = generateEventTime();
   const offers = generateOfferList();
   const imgs = generateImgs();
-  //const descriptionText = generateDescription();
+  const descriptionText = generateDescription();
   return {
     type: {
       name: type.name,
@@ -237,9 +235,8 @@ const generateEvent = () => {
     },
     offers,
     imgs,
-    //descriptionText,
-    descriptionText: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget.`,
-  };
+    descriptionText,
+    };
 };
 
 const generateEvents = (count) => {
