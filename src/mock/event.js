@@ -1,6 +1,6 @@
 import {generateEventTime} from "./time";
 
-const OFFER_COUNT_MAX = 5;
+const OFFER_COUNT_MAX = 3;
 const MIN_OFFER_PRICE = 10;
 const MAX_OFFER_PRICE = 1000;
 const MAX_IMG_COUNT = 5;
@@ -96,6 +96,7 @@ const PLACE_OFFERS = [
     price: 20,
   },
 ];
+
 const TRANSPORT__OFFERS = [
   {
     name: `Add luggage`,
@@ -161,22 +162,6 @@ const generateStartDate = () => {
     year: YEAR,
   };
 };
-
-/* const generateType = () => {
-  const type = getRandomArrayItem(TYPES);
-  return {
-    name: type.name,
-    type: type.type,
-    icon: type.icon,
-    title: type.title
-  };
-}; */
-
-/* const generateCity = () => {
-  return {
-    city: getRandomArrayItem(CITIES),
-  };
-};*/
 
 const shuffle = (array) => {
   for (let i = array.length - 1; i > 0; i--) {

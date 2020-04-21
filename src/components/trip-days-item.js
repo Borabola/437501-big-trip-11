@@ -10,8 +10,7 @@ const createTripDaysItemTemplate = (tripEventsList, i) => {
       </div>
 
       <ul class="trip-events__list">${tripEventsList}</ul>
-    </li>
-`
+    </li>`
   );
 };
 

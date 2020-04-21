@@ -1,6 +1,5 @@
 import {startDate} from "./trip-days-item";
 
-
 const createOfferTemplte = (offer, offerPrice) => {
   return (`<li class="event__offer">
              <span class="event__offer-title">${offer}</span>
@@ -19,19 +18,8 @@ const createOfferListTemplte = (event) => {
   );
 };
 
-
 export const createTripEventsItemTemplate = (event) => {
-  // const event = generateEvent();
-  // console.log(event);
-  // const type = generateType();
-  // const city = generateCity();
-  // const timeEvent = generateEventTime();
-  // console.log(timeEvent);
-  // console.log(type.type);
   const offerList = createOfferListTemplte(event);
-
-  // const price = getRandomIntegerNumber(MIN_OFFER_PRICE / 10, MAX_OFFER_PRICE / 10) * 10;
-  // console.log(price);
   return (
     `<li class="trip-events__item">
        <div class="event">

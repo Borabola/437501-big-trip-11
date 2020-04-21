@@ -1,9 +1,5 @@
 import {getRandomIntegerNumber} from "./event";
 
-
-// const finishTime = startTime + duration;
-// const startTimeLine = Math.floor(startTime / 60) +`:` + (startTime / 60 - Math.floor(startTime / 60));
-
 export const generateEventTime = () => {
   const startTime = getRandomIntegerNumber(0, 1440);
   const duration = getRandomIntegerNumber(0, 300); // до 5 часов

@@ -10,9 +10,6 @@ export const createDayListTemplate = () => {
   for (let i = 0; i < DAY_COUNT; i++) {
     const events = generateEvents(POINT_COUNT);
     let pointsContent = ``;
-    /* events.forEach((event) => pointsContent += createTripEventsItemTemplate(event));
-      //pointsContent += createTripEventsItemTemplate();
-    }*/
     for (let j = 0; j < POINT_COUNT; j++) {
       pointsContent += createTripEventsItemTemplate(events[j]);
     }
