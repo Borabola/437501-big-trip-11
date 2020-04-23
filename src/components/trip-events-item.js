@@ -1,4 +1,5 @@
 import {startDate} from "./trip-days-item";
+import {createElement} from "./util";
 
 const createOfferTemplte = (offer, offerPrice) => {
   return (`<li class="event__offer">
@@ -18,7 +19,7 @@ const createOfferListTemplte = (event) => {
   );
 };
 
-export const createTripEventsItemTemplate = (event) => {
+const createTripEventsItemTemplate = (event) => {
   const offerList = createOfferListTemplte(event);
   return (
     `<li class="trip-events__item">
@@ -50,3 +51,27 @@ export const createTripEventsItemTemplate = (event) => {
      </li>`
   );
 };
+
+export default class TripEventsItem {
+  constructor(event) {
+    this._element = event;
+    this._event = null;
+  }
+
+  getTemplate() {
+    return createTripEventsItemTemplate(this._event);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+

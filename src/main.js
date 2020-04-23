@@ -1,30 +1,94 @@
-import {DAY_COUNT} from "./components/util";
-import {createTripInfoTemplate} from "./components/trip-info";
-import {createTripControlsTemplate} from "./components/trip-controls";
-import {createTripCostTemplate} from "./components/trip-cost";
-import {createDayListTemplate} from "./components/day-list.js";
-import {createTripSortTemplate} from "./components/trip-sort.js";
-import {createTripFiltersTemplate} from "./components/trip-filters";
-import {createEventEditTemplate} from "./components/event-edit.js";
+import {DAY_COUNT, POINT_COUNT, RenderPosition, render} from "./components/util";
+import TripInfoComponent from "./components/trip-info";
+import TripControlsComponent from "./components/trip-controls";
+import TripCostComponent from "./components/trip-cost";
+import DayListComponent from "./components/day-list.js";
+import TripEventsItem from "./components/trip-events-item";
+import TripDaysItem from "./components/trip-days-item";
+import TripSortComponent from "./components/trip-sort.js";
+import TripFiltersComponent from "./components/trip-filters";
+import {generateEvents, generateEvent} from "./mock/event";
+import EventEditComponent from "./components/event-edit.js";
 
 const tripMainInfo = document.querySelector(`.trip-main`);
 const tripControlBlock = document.querySelector(`.trip-main__trip-controls`);
 const tripEventSection = document.querySelector(`.trip-events`);
 
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
+const renderEvent = (eventListElement, event) => {
+  /*const replaceEventToEdit = () => {
+    eventListElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
+  };
+
+  const replaceEditToTask = () => {
+    eventListElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
+  };
+
+  const onEscKeyDown = (evt) => {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      replaceEditToTask();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };*/
+
+  const eventComponent = new TripEventsItem(event);
+  /*const eventEditComponent = new EventEditComponent();
+
+  const editButton = eventComponent.getElement().querySelector(`.event__rollup-btn`);
+  if (editButton) {
+    editButton.addEventListener(`click`, () => {
+      replaceEventToEdit();
+      document.addEventListener(`keydown`, onEscKeyDown);
+    });
+  }*/
+
+  /*const editForm = eventEditComponent.getElement().querySelector(`.event--edit`);
+  if (editForm) {
+    editForm.addEventListener(`submit`, (evt) => {
+      evt.preventDefault();
+      replaceEditToTask();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    });
+  }*/
+
+  render(eventListElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
-render(tripMainInfo, createTripInfoTemplate(), `afterBegin`);
+/*const renderDaysEvents = (events) => {
+  events.forEach((event) => {
+    const tripEventsBlock = tripEventSection.querySelector(`.trip-events__list`);
+    renderEvent(tripEventsBlock, event);
+  });
+};*/
+
+const renderDaysEvents = (event) => {
+    const tripEventsBlock = tripEventSection.querySelector(`.trip-events__list`);
+  console.log(`tripEventsBlock`);
+    console.log(tripEventsBlock);
+    renderEvent(tripEventsBlock, event);
+};
+
+render(tripMainInfo, new TripInfoComponent().getElement(), RenderPosition.AFTERBEGIN);
 
 if (tripMainInfo.children[0]) {
-  render(tripMainInfo.children[0], createTripCostTemplate(), `beforeEnd`);
+  render(tripMainInfo.children[0], new TripCostComponent().getElement(), RenderPosition.BEFOREEND);
 }
-render(tripControlBlock.children[0], createTripControlsTemplate(), `afterEnd`);
-render(tripControlBlock, createTripFiltersTemplate(), `beforeend`);
-render(tripEventSection.children[0], createTripSortTemplate(), `afterEnd`);
-render(tripEventSection.children[1], createEventEditTemplate(), `afterEnd`);
+render(tripControlBlock.children[0], new TripControlsComponent().getElement(), RenderPosition.AFTER);
+render(tripControlBlock, new TripFiltersComponent().getElement(), RenderPosition.BEFOREEND);
+render(tripEventSection.children[0], new TripSortComponent().getElement(), RenderPosition.AFTER);
+// render2(tripEventSection.children[1], createEventEditTemplate(), `afterEnd`);
 
 if (DAY_COUNT > 0) {
-  render(tripEventSection, createDayListTemplate(), `beforeEnd`);
+  for (let i = 0; i < DAY_COUNT; i++) {
+    //const events = generateEvents(POINT_COUNT);
+    render(tripEventSection, new TripDaysItem(i).getElement(), RenderPosition.BEFOREEND);
+    //renderDaysEvents(events);
+    const event = generateEvent();
+    console.log(event);
+    renderDaysEvents(event);
+
+    // render(tripEventsBlock, ф-ция , RenderPosition.AFTERBEGIN);
+    // render(tripEventSection, new DayListComponent().getElement(), RenderPosition.BEFOREEND);
+  }
 }
