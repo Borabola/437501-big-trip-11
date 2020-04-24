@@ -1,5 +1,5 @@
 const DAY_COUNT = 2;
-const POINT_COUNT = 10;
+const POINT_COUNT = 3;
 const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`,

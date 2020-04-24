@@ -54,8 +54,8 @@ const createTripEventsItemTemplate = (event) => {
 
 export default class TripEventsItem {
   constructor(event) {
-    this._element = event;
-    this._event = null;
+    this._event = event;
+    this._element = null;
   }
 
   getTemplate() {
