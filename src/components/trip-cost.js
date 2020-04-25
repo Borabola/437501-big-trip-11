@@ -1,5 +1,4 @@
 import {createElement} from "./util";
-// import {createDayListTemplate} from "./day-list";
 
 const createTripCostTemplate = () => {
   return (

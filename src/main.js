@@ -65,7 +65,6 @@ if (tripMainInfo.children[0]) {
 render(tripControlBlock.children[0], new TripControlsComponent().getElement(), RenderPosition.AFTER);
 render(tripControlBlock, new TripFiltersComponent().getElement(), RenderPosition.BEFOREEND);
 render(tripEventSection.children[0], new TripSortComponent().getElement(), RenderPosition.AFTER);
-// render2(tripEventSection.children[1], createEventEditTemplate(), `afterEnd`);
 
 if (DAY_COUNT > 0) {
   for (let i = 0; i < DAY_COUNT; i++) {
