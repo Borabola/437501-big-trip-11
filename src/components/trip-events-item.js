@@ -1,5 +1,5 @@
 import {startDate} from "./trip-days-item";
-import {createElement} from "./util";
+import AbstractComponent from "./abstract-component.js";
 
 const createOfferTemplte = (offer, offerPrice) => {
   return (`<li class="event__offer">
@@ -52,26 +52,14 @@ const createTripEventsItemTemplate = (event) => {
   );
 };
 
-export default class TripEventsItem {
+export default class TripEventsItem extends AbstractComponent {
   constructor(event) {
+    super();
     this._event = event;
-    this._element = null;
   }
 
   getTemplate() {
     return createTripEventsItemTemplate(this._event);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 
