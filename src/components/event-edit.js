@@ -188,7 +188,7 @@ export default class EventEdit extends AbstractComponent {
   setSubmitHandler(handler) {
     if (this.getElement().querySelector(`.event--edit`)) {
       this.getElement().querySelector(`.event--edit`)
-        .addEventListener(`submit`, handler)
+        .addEventListener(`submit`, handler);
     }
   }
 }
