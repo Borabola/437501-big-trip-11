@@ -56,7 +56,8 @@ export default class TripController {
         const events = generateEvents(POINT_COUNT);
         const TripDaysItemElement = new TripDaysItem(i);
         render(this._container, TripDaysItemElement, RenderPosition.BEFOREEND);
-        renderDaysEvents(TripDaysItemElement.getElement().querySelector(`.trip-events__list`), events);
+        const tripDaysBlock = TripDaysItemElement.getTripDaysBlock();
+        renderDaysEvents(tripDaysBlock, events);
       }
     }
   }
