@@ -24,4 +24,8 @@ export default class TripDaysItem extends AbstractComponent {
   getTemplate() {
     return createTripDaysItemTemplate(this._i);
   }
+
+  getTripDaysBlock() {
+    this.getElement().querySelector(`.trip-events__list`);
+  }
 }
