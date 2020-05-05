@@ -1,5 +1,5 @@
 import {generateStartDate} from "../mock/event";
-import {createElement} from "./util";
+import AbstractComponent from "./abstract-component.js";
 
 export const startDate = generateStartDate();
 const createTripDaysItemTemplate = (i) => {
@@ -15,9 +15,9 @@ const createTripDaysItemTemplate = (i) => {
   );
 };
 
-export default class TripDaysItem {
+export default class TripDaysItem extends AbstractComponent {
   constructor(i) {
-    this._element = null;
+    super();
     this._i = i;
   }
 
@@ -25,15 +25,7 @@ export default class TripDaysItem {
     return createTripDaysItemTemplate(this._i);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  getTripDaysBlock() {
+    return this.getElement().querySelector(`.trip-events__list`);
   }
 }

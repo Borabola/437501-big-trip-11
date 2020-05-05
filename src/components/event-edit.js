@@ -1,6 +1,6 @@
 import {generateEvent, PLACE_OFFERS, TRANSPORT__OFFERS} from "../mock/event";
 import {startDate} from "./trip-days-item";
-import {createElement} from "./util";
+import AbstractComponent from "./abstract-component";
 
 const event = generateEvent();
 
@@ -180,24 +180,15 @@ const createEventEditTemplate = () => {
   );
 };
 
-export default class EventEdit {
-  constructor() {
-    this._element = null;
-  }
-
+export default class EventEdit extends AbstractComponent {
   getTemplate() {
     return createEventEditTemplate();
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
+  setSubmitHandler(handler) {
+    if (this.getElement().querySelector(`.event--edit`)) {
+      this.getElement().querySelector(`.event--edit`)
+        .addEventListener(`submit`, handler);
     }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
