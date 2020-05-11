@@ -1,7 +1,8 @@
 import {PLACE_OFFERS, TRANSPORT__OFFERS} from "../mock/event";
 import {startDate} from "./trip-days-item";
 import AbstractSmartComponent from "./abstract-smart-component";
-import {TYPES} from "../mock/event";
+import {TYPES, CITIES_DESCRIPTION} from "../mock/event";
+import {debounce} from "../utils/common";
 
 
 const createOfferItem = (event, offer) => {
@@ -53,12 +54,20 @@ const createImgsListTeplate = (event) => {
 const getNewTypeInfo = (typeName) => {
   let i = TYPES.length;
   while (i--) {
-    if (TYPES[i].name === typeName) {
-
+    if (TYPES[i].name.toLowerCase() === typeName) {
+      return TYPES[i];
     }
   }
 };
 
+const getNewDescription = (cityName) => {
+  let i = CITIES_DESCRIPTION.length;
+  while (i--) {
+    if (CITIES_DESCRIPTION[i].city === cityName) {
+      return CITIES_DESCRIPTION[i].description;
+    }
+  }
+};
 
 
 const createEventEditTemplate = (event) => {
@@ -235,7 +244,7 @@ export default class EventEdit extends AbstractSmartComponent {
   }
 
   reset() {
-    const event = this._event;
+    // const event = this._event;
 
     this.rerender();
   }
@@ -280,23 +289,21 @@ export default class EventEdit extends AbstractSmartComponent {
     });
 
     element.querySelector(`.event__type-list`).addEventListener(`change`, (evt) => {
-      // const newType = evt.target.value;
-      console.log(`evt.target.value`);
-      console.log(evt.target.value);
-      const newEventIndex = getNewTypeInfo(evt.target.value);
-      console.log(newEventIndex);
-      const newEventType = TYPES[newEventIndex];
-      console.log(newEventType);
-      // this._event.type.name = evt.target.value;
-      console.log(this._event);
+      const newEvent = getNewTypeInfo(evt.target.value);
+      this._event.type.name = newEvent.name;
+      this._event.type.type = newEvent.type;
+      this._event.type.icon = newEvent.icon;
+      this._event.type.title = newEvent.title;
+
       this.rerender();
+    });
+
+    element.querySelector(`.event__input--destination`).addEventListener(`input`, (evt) => {
+      this._event.city = evt.target.value;
+      this._event.descriptionText = getNewDescription(evt.target.value);
+      debounce(function () {
+        this.rerender();
+      }.bind(this));
     });
   }
 }
-
-/*
-name: `Taxi`,
-    type: `Transfer`,
-    icon: `img/icons/taxi.png`,
-    title: `Taxi to`
- */
