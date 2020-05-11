@@ -1,8 +1,8 @@
 import {PLACE_OFFERS, TRANSPORT__OFFERS} from "../mock/event";
 import {startDate} from "./trip-days-item";
-import AbstractComponent from "./abstract-component";
+import AbstractSmartComponent from "./abstract-smart-component";
+import {TYPES} from "../mock/event";
 
-//const event = generateEvent();
 
 const createOfferItem = (event, offer) => {
   let isChecked = ``;
@@ -24,8 +24,6 @@ const createOfferItem = (event, offer) => {
 
 const createOfferList = (event) => {
   const offers = (event.type.type === `Activity`) ? PLACE_OFFERS : TRANSPORT__OFFERS;
-  console.log(`event.type.type`);
-  console.log(event.type.type);
   let offerListItems = ``;
   for (let i = 0; i < offers.length; i++) {
     offerListItems += createOfferItem(event, offers[i]);
@@ -50,6 +48,18 @@ const createImgsListTeplate = (event) => {
     imgList
   );
 };
+
+
+const getNewTypeInfo = (typeName) => {
+  let i = TYPES.length;
+  while (i--) {
+    if (TYPES[i].name === typeName) {
+
+    }
+  }
+};
+
+
 
 const createEventEditTemplate = (event) => {
   const offerList = createOfferList(event);
@@ -200,30 +210,93 @@ const createEventEditTemplate = (event) => {
   );
 };
 
-export default class EventEdit extends AbstractComponent {
+export default class EventEdit extends AbstractSmartComponent {
   constructor(event) {
     super();
     this._event = event;
+    this._submitHandler = null;
+    this._rollupHandler = null;
+
+    this._subscribeOnEvents();
   }
 
   getTemplate() {
     return createEventEditTemplate(this._event);
   }
 
+  recoveryListeners() {
+    this.setSubmitHandler(this._submitHandler);
+    this.setEditButtonClickHandler(this._rollupHandler);
+    this._subscribeOnEvents();
+  }
+
+  rerender() {
+    super.rerender();
+  }
+
+  reset() {
+    const event = this._event;
+
+    this.rerender();
+  }
+
   setSubmitHandler(handler) {
     if (this.getElement().querySelector(`.event--edit`)) {
       this.getElement().querySelector(`.event--edit`)
         .addEventListener(`submit`, handler);
+
+      this._submitHandler = handler;
     }
   }
 
   setEditButtonClickHandler(handler) {
     this.getElement().querySelector(`.event__rollup-btn`)
       .addEventListener(`click`, handler);
+
+    this._rollupHandler = handler;
   }
 
   setFavoritesButtonClickHandler(handler) {
     this.getElement().querySelector(`.event__favorite-btn`)
       .addEventListener(`click`, handler);
   }
+
+  _subscribeOnEvents() {
+    const element = this.getElement();
+
+    /* const offersList = element.querySelector(`.event__available-offers`);
+    if (offersList) {
+      offersList.addEventListener(`change`, (evt) => {
+        this._activeOffers[evt.target.value] = evt.target.checked;
+
+        this.rerender();
+      });
+    }*/
+
+    element.querySelector(`.event__input--price`).addEventListener(`input`, (evt) => {
+      this._event.price = evt.target.value;
+
+      this.rerender();
+    });
+
+    element.querySelector(`.event__type-list`).addEventListener(`change`, (evt) => {
+      // const newType = evt.target.value;
+      console.log(`evt.target.value`);
+      console.log(evt.target.value);
+      const newEventIndex = getNewTypeInfo(evt.target.value);
+      console.log(newEventIndex);
+      const newEventType = TYPES[newEventIndex];
+      console.log(newEventType);
+      // this._event.type.name = evt.target.value;
+      console.log(this._event);
+      this.rerender();
+    });
+  }
 }
+
+/*
+name: `Taxi`,
+    type: `Transfer`,
+    icon: `img/icons/taxi.png`,
+    title: `Taxi to`
+ */

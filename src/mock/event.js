@@ -230,6 +230,7 @@ const generateEvents = (count) => {
 };
 
 export {
+  TYPES,
   generateStartDate,
   generateEvent,
   generateEvents,
