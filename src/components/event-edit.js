@@ -58,6 +58,7 @@ const getNewTypeInfo = (typeName) => {
       return TYPES[i];
     }
   }
+  return TYPES[0];
 };
 
 const getNewDescription = (cityName) => {
@@ -67,6 +68,7 @@ const getNewDescription = (cityName) => {
       return CITIES_DESCRIPTION[i].description;
     }
   }
+  return ``;
 };
 
 
