@@ -21,7 +21,6 @@ export default class TripController {
     this._showedEventControllers = [];
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
-    // this._noEventComponent = new NoEventComponent;
   }
   render(events) {
     this._events = events;

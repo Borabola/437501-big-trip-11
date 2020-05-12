@@ -180,11 +180,6 @@ const createEventEditTemplate = (event) => {
         </div>
 
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-
-
-
-        <!--<button class="event__reset-btn" type="reset">Cancel</button> -->
-
         <button class="event__reset-btn" type="reset">Delete</button>
 
         <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" checked>
@@ -246,8 +241,6 @@ export default class EventEdit extends AbstractSmartComponent {
   }
 
   reset() {
-    // const event = this._event;
-
     this.rerender();
   }
 
@@ -274,15 +267,6 @@ export default class EventEdit extends AbstractSmartComponent {
 
   _subscribeOnEvents() {
     const element = this.getElement();
-
-    /* const offersList = element.querySelector(`.event__available-offers`);
-    if (offersList) {
-      offersList.addEventListener(`change`, (evt) => {
-        this._activeOffers[evt.target.value] = evt.target.checked;
-
-        this.rerender();
-      });
-    }*/
 
     element.querySelector(`.event__input--price`).addEventListener(`input`, (evt) => {
       this._event.price = evt.target.value;
