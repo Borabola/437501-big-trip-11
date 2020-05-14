@@ -1,64 +1,53 @@
 import {DAY_COUNT, POINT_COUNT} from "../components/util";
-import {generateEvents} from "../mock/event";
-import TripEventsItem from "../components/trip-events-item";
+import EventController from "./event-controller.js";
 import TripDaysItem from "../components/trip-days-item";
-import EventEditComponent from "../components/event-edit.js";
-import {render, replace, RenderPosition} from "../utils/render.js";
+import {render, RenderPosition} from "../utils/render.js";
 
-const renderEvent = (eventListElement, event) => {
-  const eventComponent = new TripEventsItem(event);
-  const eventEditComponent = new EventEditComponent();
-  const replaceEventToEdit = () => {
-    replace(eventEditComponent, eventComponent);
-  };
 
-  const replaceEditToTask = () => {
-    replace(eventComponent, eventEditComponent);
-  };
+const renderDaysEvents = (eventBlock, events, onDataChange, onViewChange) => {
+  return events.map((event) => {
+    const eventController = new EventController(eventBlock, onDataChange, onViewChange);
 
-  const onEscKeyDown = (evt) => {
-    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+    eventController.render(event);
 
-    if (isEscKey) {
-      replaceEditToTask();
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    }
-  };
-
-  eventComponent.setEditButtonClickHandler(() => {
-    replaceEventToEdit();
-    document.addEventListener(`keydown`, onEscKeyDown);
-  });
-
-  eventEditComponent.setSubmitHandler((evt) => {
-    evt.preventDefault();
-    replaceEditToTask();
-    document.removeEventListener(`keydown`, onEscKeyDown);
-  });
-
-  render(eventListElement, eventComponent, RenderPosition.BEFOREEND);
-};
-
-const renderDaysEvents = (eventBlock, events) => {
-  events.forEach((event) => {
-    renderEvent(eventBlock, event);
+    return eventController;
   });
 };
-
 
 export default class TripController {
   constructor(container) {
     this._container = container;
+    this._events = [];
+    this._showedEventControllers = [];
+    this._onDataChange = this._onDataChange.bind(this);
+    this._onViewChange = this._onViewChange.bind(this);
   }
-  render() {
+  render(events) {
+    this._events = events;
     if (DAY_COUNT > 0) {
       for (let i = 0; i < DAY_COUNT; i++) {
-        const events = generateEvents(POINT_COUNT);
         const TripDaysItemElement = new TripDaysItem(i);
         render(this._container, TripDaysItemElement, RenderPosition.BEFOREEND);
         const tripDaysBlock = TripDaysItemElement.getTripDaysBlock();
-        renderDaysEvents(tripDaysBlock, events);
+        const newEvents = renderDaysEvents(tripDaysBlock, this._events.slice(i * POINT_COUNT, (i + 1) * POINT_COUNT), this._onDataChange, this._onViewChange);
+        this._showedEventControllers = this._showedEventControllers.concat(newEvents);
       }
     }
+  }
+
+  _onDataChange(oldData, newData) {
+    const index = this._events.findIndex((it) => it === oldData);
+
+    if (index === -1) {
+      return;
+    }
+
+    this._events = [].concat(this._events.slice(0, index), newData, this._events.slice(index + 1));
+
+    this._showedEventControllers.render(this._events[index]);
+  }
+
+  _onViewChange() {
+    this._showedEventControllers.forEach((it) => it.setDefaultView());
   }
 }

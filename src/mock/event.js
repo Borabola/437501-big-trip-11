@@ -36,6 +36,13 @@ const TYPES = [
   },
 
   {
+    name: `Drive`,
+    type: `Transfer`,
+    icon: `img/icons/drive.png`,
+    title: `Drive to`
+  },
+
+  {
     name: `Ship`,
     type: `Transfer`,
     icon: `img/icons/ship.png`,
@@ -63,17 +70,44 @@ const TYPES = [
     name: `Check-in`,
     type: `Activity`,
     icon: `img/icons/check-in.png`,
-    title: `Check-in in`
+    title: `Check-in`
   },
   {
     name: `Sightseeing`,
     type: `Activity`,
     icon: `img/icons/sightseeing.png`,
-    title: `Sightseeing in`
+    title: `Sightseeing`
   }
 ];
 
 const CITIES = [`Chamonix`, `Amsterdam`, `Geneva`, `London`, `Paris`, `Barcelona`];
+const CITIES_DESCRIPTION = [
+  {
+    city: `Chamonix`,
+    description: `Chamonix-Mont-Blanc, more commonly known as Chamonix, is a commune in the Haute-Savoie department in the Auvergne-Rhône-Alpes region in south-eastern France. It was the site of the first Winter Olympics in 1924.Situated to the north of Mont Blanc, between the peaks of the Aiguilles Rouges and the notable Aiguille du Midi, Chamonix is one of the oldest ski resorts in France. `
+  },
+  {
+    city: `Amsterdam`,
+    description: `Amsterdam is the capital and most populous city of the Netherlands with a population of 872,680 within the city proper, 1,380,872 in the urban area[5] and 2,410,960 in the metropolitan area.[9] Found within the province of North Holland,[13][14] Amsterdam is colloquially referred to as the "Venice of the North", attributed by the large number of canals which form a UNESCO World Heritage Site.`
+  },
+  {
+    city: `Barcelona`,
+    description: `Barcelona is a city on the coast of northeastern Spain. It is the capital and largest city of the autonomous community of Catalonia, as well as the second most populous municipality of Spain. `
+  },
+  {
+    city: `Geneva`,
+    description: `Geneva is the second-most populous city in Switzerland (after Zürich) and the most populous city of Romandy, the French-speaking part of Switzerland`
+  },
+  {
+    city: `London`,
+    description: `London is the capital and largest city of England and the United Kingdom.[7][8] Standing on the River Thames in the south-east of England, at the head of its 50-mile (80 km) estuary leading to the North Sea, London has been a major settlement for two millennia. `
+  },
+  {
+    city: `Paris`,
+    description: `Paris is the capital and most populous city of France, with a population of 2,148,271 residents (official estimate, 1 January 2020) in an area of 105 square kilometres (41 square miles).Since the 17th century, Paris has been one of Europe's major centres of finance, diplomacy, commerce, fashion, science and arts.`
+  }
+];
+
 const PLACE_OFFERS = [
   {
     name: `Lunch in city`,
@@ -230,6 +264,8 @@ const generateEvents = (count) => {
 };
 
 export {
+  TYPES,
+  CITIES_DESCRIPTION,
   generateStartDate,
   generateEvent,
   generateEvents,

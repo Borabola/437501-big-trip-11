@@ -1,10 +1,11 @@
-import {generateEvent, PLACE_OFFERS, TRANSPORT__OFFERS} from "../mock/event";
+import {PLACE_OFFERS, TRANSPORT__OFFERS} from "../mock/event";
 import {startDate} from "./trip-days-item";
-import AbstractComponent from "./abstract-component";
+import AbstractSmartComponent from "./abstract-smart-component";
+import {TYPES, CITIES_DESCRIPTION} from "../mock/event";
+import {debounce} from "../utils/common";
 
-const event = generateEvent();
 
-const createOfferItem = (offer) => {
+const createOfferItem = (event, offer) => {
   let isChecked = ``;
   if (event.offers.length > 0) {
     isChecked = (event.offers.find((item) => item.name === offer.name)) ? `checked` : ``;
@@ -22,11 +23,11 @@ const createOfferItem = (offer) => {
   );
 };
 
-const createOfferList = () => {
+const createOfferList = (event) => {
   const offers = (event.type.type === `Activity`) ? PLACE_OFFERS : TRANSPORT__OFFERS;
   let offerListItems = ``;
   for (let i = 0; i < offers.length; i++) {
-    offerListItems += createOfferItem(offers[i]);
+    offerListItems += createOfferItem(event, offers[i]);
   }
   return (
     `<div class="event__available-offers">${offerListItems}</div>`
@@ -39,7 +40,7 @@ const createImg = (imgLink) => {
   );
 };
 
-const createImgsListTeplate = () => {
+const createImgsListTeplate = (event) => {
   let imgList = ``;
   for (let i = 0; i < event.imgs.length; i++) {
     imgList += createImg(event.imgs[i]);
@@ -49,9 +50,31 @@ const createImgsListTeplate = () => {
   );
 };
 
-const createEventEditTemplate = () => {
-  const offerList = createOfferList();
-  const imgList = createImgsListTeplate();
+
+const getNewTypeInfo = (typeName) => {
+  let i = TYPES.length;
+  while (i--) {
+    if (TYPES[i].name.toLowerCase() === typeName) {
+      return TYPES[i];
+    }
+  }
+  return TYPES[0];
+};
+
+const getNewDescription = (cityName) => {
+  let i = CITIES_DESCRIPTION.length;
+  while (i--) {
+    if (CITIES_DESCRIPTION[i].city === cityName) {
+      return CITIES_DESCRIPTION[i].description;
+    }
+  }
+  return ``;
+};
+
+
+const createEventEditTemplate = (event) => {
+  const offerList = createOfferList(event);
+  const imgList = createImgsListTeplate(event);
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
       <header class="event__header">
@@ -127,7 +150,7 @@ const createEventEditTemplate = () => {
           <label class="event__label  event__type-output" for="event-destination-1">
             ${event.type.title}
           </label>
-          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Geneva" list="destination-list-1">
+          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${event.city}" list="destination-list-1">
           <datalist id="destination-list-1">
             <option value="Amsterdam"></option>
             <option value="Geneva"></option>
@@ -153,11 +176,24 @@ const createEventEditTemplate = () => {
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
+          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${event.price}">
         </div>
 
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-        <button class="event__reset-btn" type="reset">Cancel</button>
+        <button class="event__reset-btn" type="reset">Delete</button>
+
+        <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" checked>
+        <label class="event__favorite-btn" for="event-favorite-1">
+          <span class="visually-hidden">Add to favorite</span>
+          <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
+            <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
+          </svg>
+        </label>
+
+        <button class="event__rollup-btn" type="button">
+          <span class="visually-hidden">Open event</span>
+        </button>
+
       </header>
       <section class="event__details">
         <section class="event__section  event__section--offers">
@@ -180,15 +216,80 @@ const createEventEditTemplate = () => {
   );
 };
 
-export default class EventEdit extends AbstractComponent {
+export default class EventEdit extends AbstractSmartComponent {
+  constructor(event) {
+    super();
+    this._event = event;
+    this._submitHandler = null;
+    this._rollupHandler = null;
+
+    this._subscribeOnEvents();
+  }
+
   getTemplate() {
-    return createEventEditTemplate();
+    return createEventEditTemplate(this._event);
+  }
+
+  recoveryListeners() {
+    this.setSubmitHandler(this._submitHandler);
+    this.setEditButtonClickHandler(this._rollupHandler);
+    this._subscribeOnEvents();
+  }
+
+  rerender() {
+    super.rerender();
+  }
+
+  reset() {
+    this.rerender();
   }
 
   setSubmitHandler(handler) {
     if (this.getElement().querySelector(`.event--edit`)) {
       this.getElement().querySelector(`.event--edit`)
         .addEventListener(`submit`, handler);
+
+      this._submitHandler = handler;
     }
+  }
+
+  setEditButtonClickHandler(handler) {
+    this.getElement().querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, handler);
+
+    this._rollupHandler = handler;
+  }
+
+  setFavoritesButtonClickHandler(handler) {
+    this.getElement().querySelector(`.event__favorite-btn`)
+      .addEventListener(`click`, handler);
+  }
+
+  _subscribeOnEvents() {
+    const element = this.getElement();
+
+    element.querySelector(`.event__input--price`).addEventListener(`input`, (evt) => {
+      this._event.price = evt.target.value;
+
+      this.rerender();
+    });
+
+    element.querySelector(`.event__type-list`).addEventListener(`change`, (evt) => {
+      const newEvent = getNewTypeInfo(evt.target.value);
+      this._event.type.name = newEvent.name;
+      this._event.type.type = newEvent.type;
+      this._event.type.icon = newEvent.icon;
+      this._event.type.title = newEvent.title;
+
+      this.rerender();
+    });
+
+    element.querySelector(`.event__input--destination`).addEventListener(`input`, (evt) => {
+      this._event.city = evt.target.value;
+      this._event.descriptionText = getNewDescription(evt.target.value);
+      debounce(function () {
+        this.rerender();
+      }.bind(this));
+    });
   }
 }
