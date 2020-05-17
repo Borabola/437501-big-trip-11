@@ -238,6 +238,7 @@ const generateEvent = () => {
   const imgs = generateImgs();
   const descriptionText = generateDescription();
   return {
+    id: String(new Date() + Math.random()),
     type: {
       name: type.name,
       type: type.type,

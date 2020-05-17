@@ -2,6 +2,7 @@ import {DAY_COUNT, POINT_COUNT} from "../components/util";
 import EventController from "./event-controller.js";
 import TripDaysItem from "../components/trip-days-item";
 import {render, RenderPosition} from "../utils/render.js";
+import Events from "../models/points";
 
 
 const renderDaysEvents = (eventBlock, events, onDataChange, onViewChange) => {
@@ -15,21 +16,21 @@ const renderDaysEvents = (eventBlock, events, onDataChange, onViewChange) => {
 };
 
 export default class TripController {
-  constructor(container) {
+  constructor(container, eventsModel) {
     this._container = container;
-    this._events = [];
+    this._eventsModel = eventsModel;
     this._showedEventControllers = [];
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
   }
-  render(events) {
-    this._events = events;
+  render() {
+    const events = this._eventsModel.getEvents();
     if (DAY_COUNT > 0) {
       for (let i = 0; i < DAY_COUNT; i++) {
         const TripDaysItemElement = new TripDaysItem(i);
         render(this._container, TripDaysItemElement, RenderPosition.BEFOREEND);
         const tripDaysBlock = TripDaysItemElement.getTripDaysBlock();
-        const newEvents = renderDaysEvents(tripDaysBlock, this._events.slice(i * POINT_COUNT, (i + 1) * POINT_COUNT), this._onDataChange, this._onViewChange);
+        const newEvents = renderDaysEvents(tripDaysBlock, events.slice(i * POINT_COUNT, (i + 1) * POINT_COUNT), this._onDataChange, this._onViewChange);
         this._showedEventControllers = this._showedEventControllers.concat(newEvents);
       }
     }
