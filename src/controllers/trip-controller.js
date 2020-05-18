@@ -2,7 +2,6 @@ import {DAY_COUNT, POINT_COUNT} from "../components/util";
 import EventController from "./event-controller.js";
 import TripDaysItem from "../components/trip-days-item";
 import {render, RenderPosition} from "../utils/render.js";
-import Events from "../models/points";
 
 
 const renderDaysEvents = (eventBlock, events, onDataChange, onViewChange) => {
@@ -14,6 +13,7 @@ const renderDaysEvents = (eventBlock, events, onDataChange, onViewChange) => {
     return eventController;
   });
 };
+
 
 export default class TripController {
   constructor(container, eventsModel) {
@@ -30,25 +30,24 @@ export default class TripController {
         const TripDaysItemElement = new TripDaysItem(i);
         render(this._container, TripDaysItemElement, RenderPosition.BEFOREEND);
         const tripDaysBlock = TripDaysItemElement.getTripDaysBlock();
-        const newEvents = renderDaysEvents(tripDaysBlock, events.slice(i * POINT_COUNT, (i + 1) * POINT_COUNT), this._onDataChange, this._onViewChange);
+        // const newEvents = renderDaysEvents(tripDaysBlock, events.slice(i * POINT_COUNT, (i + 1) * POINT_COUNT), this._onDataChange, this._onViewChange);
+        const newEvents = renderDaysEvents(tripDaysBlock, events, this._onDataChange, this._onViewChange);
         this._showedEventControllers = this._showedEventControllers.concat(newEvents);
       }
     }
   }
 
-  _onDataChange(oldData, newData) {
-    const index = this._events.findIndex((it) => it === oldData);
+  _onDataChange(eventController, oldData, newData) {
+    const isSuccess = this._eventModel.updateTask(oldData.id, newData);
 
-    if (index === -1) {
-      return;
+    if (isSuccess) {
+      eventController.render(newData);
     }
-
-    this._events = [].concat(this._events.slice(0, index), newData, this._events.slice(index + 1));
-
-    this._showedEventControllers.render(this._events[index]);
   }
 
   _onViewChange() {
+
+
     this._showedEventControllers.forEach((it) => it.setDefaultView());
   }
 }

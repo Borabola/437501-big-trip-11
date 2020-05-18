@@ -1,4 +1,5 @@
-import {startDate} from "./trip-days-item";
+// import {startDate} from "./trip-days-item";
+import {formatTime} from "../utils/common";
 import AbstractComponent from "./abstract-component.js";
 
 const createOfferTemplte = (offer, offerPrice) => {
@@ -20,6 +21,8 @@ const createOfferListTemplte = (event) => {
 };
 
 const createTripEventsItemTemplate = (event) => {
+  const startTime = formatTime(event.timeEvent.start);
+  const finishTime = formatTime(event.timeEvent.finish);
   const offerList = createOfferListTemplte(event);
   return (
     `<li class="trip-events__item">
@@ -31,9 +34,9 @@ const createTripEventsItemTemplate = (event) => {
 
          <div class="event__schedule">
            <p class="event__time">
-             <time class="event__start-time" datetime="20${startDate.year}-${startDate.monthNumber}-${startDate.day}T ${event.timeEvent.start}">${event.timeEvent.start}</time>
+             <time class="event__start-time" datetime="${event.timeEvent.start}">${startTime}</time>
              &mdash;
-             <time class="event__end-time" datetime="20${startDate.year}-${startDate.monthNumber}-${startDate.day}T${event.timeEvent.finish}">${event.timeEvent.finish}</time>
+             <time class="event__end-time" datetime="${event.timeEvent.finish}">${finishTime}</time>
            </p>
            <p class="event__duration">${event.timeEvent.durationLine}</p>
          </div>

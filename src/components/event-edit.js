@@ -1,8 +1,11 @@
 import {PLACE_OFFERS, TRANSPORT__OFFERS} from "../mock/event";
-import {startDate} from "./trip-days-item";
+// import {startDate} from "./trip-days-item";
 import AbstractSmartComponent from "./abstract-smart-component";
 import {TYPES, CITIES_DESCRIPTION} from "../mock/event";
-import {debounce} from "../utils/common";
+import {debounce, formatTime, formatDate} from "../utils/common";
+import flatpickr from "flatpickr";
+
+import "flatpickr/dist/flatpickr.min.css";
 
 
 const createOfferItem = (event, offer) => {
@@ -75,6 +78,12 @@ const getNewDescription = (cityName) => {
 const createEventEditTemplate = (event) => {
   const offerList = createOfferList(event);
   const imgList = createImgsListTeplate(event);
+  const startDate = formatDate(event.timeEvent.start);
+  console.log(startDate);
+  const startTime = formatTime(event.timeEvent.start);
+  console.log(startTime);
+  const finishDate = formatDate(event.timeEvent.finish);
+  const finishTime = formatTime(event.timeEvent.finish);
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
       <header class="event__header">
@@ -163,12 +172,12 @@ const createEventEditTemplate = (event) => {
           <label class="visually-hidden" for="event-start-time-1">
             From
           </label>
-          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${startDate.year}/${startDate.monthNumber}/${startDate.day} ${event.timeEvent.start}">
+          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${startDate.toString()} ${startTime}">
           &mdash;
           <label class="visually-hidden" for="event-end-time-1">
             To
           </label>
-          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${startDate.year}/${startDate.monthNumber}/${startDate.day} ${event.timeEvent.finish}">
+          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${finishDate} ${finishTime}">
         </div>
 
         <div class="event__field-group  event__field-group--price">
@@ -222,8 +231,11 @@ export default class EventEdit extends AbstractSmartComponent {
     this._event = event;
     this._submitHandler = null;
     this._rollupHandler = null;
+    this._flatpickrStart = null;
+    this._flatpickrFinish = null;
 
     this._subscribeOnEvents();
+    this._applyFlatpickr();
   }
 
   getTemplate() {
@@ -238,6 +250,8 @@ export default class EventEdit extends AbstractSmartComponent {
 
   rerender() {
     super.rerender();
+
+    this._applyFlatpickr();
   }
 
   reset() {
@@ -290,6 +304,32 @@ export default class EventEdit extends AbstractSmartComponent {
       debounce(function () {
         this.rerender();
       }.bind(this));
+    });
+  }
+
+  _applyFlatpickr() {
+    if (this._flatpickrStart) {
+      this._flatpickrStart.destroy();
+      this._flatpickrStart = null;
+    }
+
+    if (this._flatpickrFinish) {
+      this._flatpickrFinish.destroy();
+      this._flatpickrFinish = null;
+    }
+
+    const dateStartElement = this.getElement().querySelector(`#event-start-time-1`);
+    const dateFinishElement = this.getElement().querySelector(`#event-end-time-1`);
+    this._flatpickrStart = flatpickr(dateStartElement, {
+      altInput: true,
+      allowInput: true,
+      defaultDate: this._event.timeEvent.start,
+    });
+
+    this._flatpickrFinish = flatpickr(dateFinishElement, {
+      altInput: true,
+      allowInput: true,
+      defaultDate: this._event.timeEvent.finish,
     });
   }
 }
