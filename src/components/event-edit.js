@@ -6,6 +6,7 @@ import {debounce, formatTime, formatDate} from "../utils/common";
 import flatpickr from "flatpickr";
 
 import "flatpickr/dist/flatpickr.min.css";
+import "flatpickr/dist/themes/material_blue.css";
 
 
 const createOfferItem = (event, offer) => {
@@ -250,7 +251,6 @@ export default class EventEdit extends AbstractSmartComponent {
 
   rerender() {
     super.rerender();
-
     this._applyFlatpickr();
   }
 
@@ -321,15 +321,17 @@ export default class EventEdit extends AbstractSmartComponent {
     const dateStartElement = this.getElement().querySelector(`#event-start-time-1`);
     const dateFinishElement = this.getElement().querySelector(`#event-end-time-1`);
     this._flatpickrStart = flatpickr(dateStartElement, {
-      altInput: true,
+      //altInput: true,
       allowInput: true,
       defaultDate: this._event.timeEvent.start,
+      dateFormat: `d/m/y h:i`,
     });
 
     this._flatpickrFinish = flatpickr(dateFinishElement, {
-      altInput: true,
+      //altInput: true,
       allowInput: true,
       defaultDate: this._event.timeEvent.finish,
+      dateFormat: `d/m/y h:i`,
     });
   }
 }
