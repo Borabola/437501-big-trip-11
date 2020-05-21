@@ -23,6 +23,7 @@ export default class EventController {
     const oldEventComponent = this._eventComponent;
     const oldEventEditComponent = this._eventEditComponent;
 
+
     this._eventComponent = new TripEventsItem(event);
     this._eventEditComponent = new EventEditComponent(event);
 

@@ -17,4 +17,10 @@ const formatTime = (date) => {
 const formatDate = (date) => {
   return moment(date).format(`l`);
 };
-export {debounce, formatTime, formatDate};
+
+const isOneDay = (dateA, dateB) => {
+  const a = moment(dateA);
+  const b = moment(dateB);
+  return a.diff(b, `days`) === 0 && dateA.getDate() === dateB.getDate();
+};
+export {debounce, formatTime, formatDate, isOneDay};

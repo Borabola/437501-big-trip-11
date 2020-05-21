@@ -22,9 +22,13 @@ export default class TripController {
     this._showedEventControllers = [];
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
+    this._onFilterChange = this._onFilterChange.bind(this);
+
+    this._eventsModel.setFilterChangeHandler(this._onFilterChange);
   }
   render() {
     const events = this._eventsModel.getEvents();
+    console.log(events);
     if (DAY_COUNT > 0) {
       for (let i = 0; i < DAY_COUNT; i++) {
         const TripDaysItemElement = new TripDaysItem(i);
@@ -37,8 +41,25 @@ export default class TripController {
     }
   }
 
+  _renderEnents(events) {
+    const eventListElement = this._eventsComponent.getElement();
+
+    const newEvents = renderDaysEvents(eventListElement, events, this._onDataChange, this._onViewChange);
+    this._showedEventControllers = this._showedEventControllers.concat(newEvents);
+  }
+
+  _removeEvents() {
+    this._showedEventControllers.forEach((eventController) => eventController.destroy());
+    this._showedEventControllers = [];
+  }
+
+  _updateEvents() {
+    this._removeEvents();
+    this._renderEvents(this._eventsModel.getEvents());
+  }
+
   _onDataChange(eventController, oldData, newData) {
-    const isSuccess = this._eventModel.updateTask(oldData.id, newData);
+    const isSuccess = this._eventsModel.updateEvent(oldData.id, newData);
 
     if (isSuccess) {
       eventController.render(newData);
@@ -46,8 +67,10 @@ export default class TripController {
   }
 
   _onViewChange() {
-
-
     this._showedEventControllers.forEach((it) => it.setDefaultView());
+  }
+
+  _onFilterChange() {
+    this._updateEvents();
   }
 }

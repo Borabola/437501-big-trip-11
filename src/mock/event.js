@@ -1,4 +1,5 @@
 import {generateEventTime} from "./time";
+import {MONTH_NAMES} from "../const";
 
 const OFFER_COUNT_MAX = 3;
 const MIN_OFFER_PRICE = 10;
@@ -64,7 +65,7 @@ const TYPES = [
     name: `Restaurant`,
     type: `Activity`,
     icon: `img/icons/restaurant.png`,
-    title: `Visit the restaurant`
+    title: `Restaurant in`
   },
   {
     name: `Check-in`,
@@ -76,7 +77,7 @@ const TYPES = [
     name: `Sightseeing`,
     type: `Activity`,
     icon: `img/icons/sightseeing.png`,
-    title: `Sightseeing`
+    title: `Sightseeing in`
   }
 ];
 
@@ -160,21 +161,6 @@ const TRANSPORT__OFFERS = [
     name: `Choose seats`,
     price: 5,
   },
-];
-
-const MONTH_NAMES = [
-  `JAN`,
-  `FEB`,
-  `MAR`,
-  `APR`,
-  `MAY`,
-  `JUN`,
-  `JUL`,
-  `AUG`,
-  `SEP`,
-  `OCT`,
-  `NOV`,
-  `DES`,
 ];
 
 
