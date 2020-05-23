@@ -1,4 +1,5 @@
 import moment from "moment";
+import {MONTH_NAMES} from "../const";
 
 const DEBOUNCE_INTERVAL = 700; // ms
 let lastTimeout;
@@ -8,6 +9,10 @@ const debounce = (cb) => {
     clearTimeout(lastTimeout);
   }
   lastTimeout = window.setTimeout(cb, DEBOUNCE_INTERVAL);
+};
+
+const getMonthName = (date) => {
+  return MONTH_NAMES[date.getMonth()];
 };
 
 const formatTime = (date) => {
@@ -23,4 +28,4 @@ const isOneDay = (dateA, dateB) => {
   const b = moment(dateB);
   return a.diff(b, `days`) === 0 && dateA.getDate() === dateB.getDate();
 };
-export {debounce, formatTime, formatDate, isOneDay};
+export {debounce, formatTime, formatDate, getMonthName, isOneDay};

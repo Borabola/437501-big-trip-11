@@ -80,9 +80,7 @@ const createEventEditTemplate = (event) => {
   const offerList = createOfferList(event);
   const imgList = createImgsListTeplate(event);
   const startDate = formatDate(event.timeEvent.start);
-  console.log(startDate);
   const startTime = formatTime(event.timeEvent.start);
-  console.log(startTime);
   const finishDate = formatDate(event.timeEvent.finish);
   const finishTime = formatTime(event.timeEvent.finish);
   return (

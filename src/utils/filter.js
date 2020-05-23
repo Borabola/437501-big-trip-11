@@ -2,6 +2,8 @@
 import {isOneDay} from "./common.js";
 import {FilterType} from "../const.js";
 
+
+export const getNormalizeEvent = (events) => events.sort
 export const getFavoriteEvents = (events) => {
   return events.filter((event) => event.isFavorite);
 };

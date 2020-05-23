@@ -12,7 +12,8 @@ export default class Events {
   }
 
   getEvents() {
-    return getEventsByFilter(this._events, this._activeFilterType);
+    const eventsNormalize = this._events.sort((a, b) => a.timeEvent.start - b.timeEvent.start);
+    return getEventsByFilter(eventsNormalize, this._activeFilterType);
   }
 
   getEventsAll() {
