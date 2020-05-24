@@ -41,7 +41,9 @@ export default class TripFilters extends AbstractComponent {
 
   setFilterChangeHandler(handler) {
     this.getElement().addEventListener(`change`, (evt) => {
+      console.log(`Изменение фильтра`);
       const filterName = getFilterNameById(evt.target.id);
+      console.log(evt.target.id);
       handler(filterName);
     });
   }

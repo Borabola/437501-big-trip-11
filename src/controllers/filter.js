@@ -19,17 +19,17 @@ export default class FilterController {
 
   render() {
     const container = this._container;
-    const allEvents = this._eventsModel.getEventsAll();
+    const normalizedEvents = this._eventsModel.getEvents();
     const filters = Object.values(FilterType).map((filterType) => {
       return {
         name: filterType,
-        count: getEventsByFilter(allEvents, filterType).length,
+        count: getEventsByFilter(normalizedEvents, filterType).length,
         checked: filterType === this._activeFilterType,
       };
     });
     const oldComponent = this._filterComponent;
 
-    this._filterComponent = new FilterComponent(filters);                     ///!!!
+    this._filterComponent = new FilterComponent(filters);
     this._filterComponent.setFilterChangeHandler(this._onFilterChange);
 
     if (oldComponent) {

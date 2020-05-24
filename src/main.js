@@ -1,4 +1,3 @@
-import {DAY_COUNT, POINT_COUNT} from "./components/util.js";
 import {generateEvents} from "./mock/event";
 import TripInfoComponent from "./components/trip-info";
 import TripCostComponent from "./components/trip-cost";
@@ -10,11 +9,13 @@ import TripController from "./controllers/trip-controller";
 import {render, RenderPosition} from "./utils/render.js";
 import EventsModel from "./models/points";
 
+const EVENTS_NUMBER = 15;
+
 const tripMainInfo = document.querySelector(`.trip-main`);
 const tripControlBlock = document.querySelector(`.trip-main__trip-controls`);
 const tripEventSection = document.querySelector(`.trip-events`);
 
-const events = generateEvents(POINT_COUNT * DAY_COUNT);
+const events = generateEvents(EVENTS_NUMBER);
 const eventsModel = new EventsModel();
 eventsModel.setEvents(events);
 

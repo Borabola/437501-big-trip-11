@@ -4,17 +4,14 @@ import {getMonthName} from "../utils/common";
 
 // export const startDate = generateStartDate();
 const createTripDaysItemTemplate = (event) => {
-  console.log(`event.timeEvent.start`);
-  console.log(event.timeEvent.start);
-  console.log(event.timeEvent.start.getDay());
   const month = getMonthName(event.timeEvent.start);
   const year = event.timeEvent.start.getFullYear() - 2000;
 
   return (
     `<li class="trip-days__item  day">
       <div class="day__info">
-        <span class="day__counter">${event.timeEvent.start.getDay()}</span>
-        <time class="day__date" datetime="${event.timeEvent.start.getFullYear()}-${event.timeEvent.start.getMonth()}-${event.timeEvent.start.getDay()}">${month} ${year}</time>
+        <span class="day__counter">${event.timeEvent.start.getDate()}</span>
+        <time class="day__date" datetime="${event.timeEvent.start.getFullYear()}-${event.timeEvent.start.getMonth()}-${event.timeEvent.start.getDate()}">${month} ${year}</time>
       </div>
 
       <ul class="trip-events__list"></ul>

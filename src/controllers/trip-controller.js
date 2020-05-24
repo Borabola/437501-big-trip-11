@@ -2,6 +2,7 @@ import {DAY_COUNT, POINT_COUNT} from "../components/util";
 import EventController from "./event-controller.js";
 import TripDaysItem from "../components/trip-days-item";
 import {render, RenderPosition} from "../utils/render.js";
+import {getExactDay, isOneDay} from "../utils/common";
 
 
 const renderDaysEvents = (eventBlock, events, onDataChange, onViewChange) => {
@@ -28,8 +29,8 @@ export default class TripController {
   }
   render() {
     let events = this._eventsModel.getEvents();
-
-    let eventsForDay = events.filter((event) => event.timeEvent.start.getDate() === events[0].timeEvent.start.getDate());
+    let eventsForDay = events.filter((event) => isOneDay(event.timeEvent.start, events[0].timeEvent.start));
+    // let eventsForDay = events.filter((event) => Math.floor(event.timeEvent.start.getTime() / (1000 * 60 * 60 * 24)) === Math.floor(events[0].timeEvent.start.getTime() / (1000 * 60 * 60 * 24)));
     let eventsToRender = events;
     let eventsShown = 0;
 
@@ -41,15 +42,27 @@ export default class TripController {
       const newEvents = renderDaysEvents(tripDaysBlock, eventsForDay, this._onDataChange, this._onViewChange);
       this._showedEventControllers = this._showedEventControllers.concat(newEvents);
       eventsToRender = eventsToRender.slice(eventsForDay.length);
-      eventsForDay = eventsToRender.filter((event) => event.timeEvent.start.getDate() === eventsToRender[0].timeEvent.start.getDate());
+      eventsForDay = eventsToRender.filter((event) => isOneDay(event.timeEvent.start, eventsToRender[0].timeEvent.start));
     }
   }
 
   _renderEvents(events) {
-    const eventListElement = this._eventsComponent.getElement();
+    let updatedEvents = events;
+    let eventsForDay = updatedEvents.filter((event) => isOneDay(event.timeEvent.start, updatedEvents[0].timeEvent.start));
+    //let eventsForDay = events.filter((event) => Math.floor(event.timeEvent.start.getTime() / (1000 * 60 * 60 * 24)) === Math.floor(events[0].timeEvent.start.getTime() / (1000 * 60 * 60 * 24)));
+    let eventsToRender = updatedEvents;
+    let eventsShown = 0;
 
-    const newEvents = renderDaysEvents(eventListElement, events, this._onDataChange, this._onViewChange);
-    this._showedEventControllers = this._showedEventControllers.concat(newEvents);
+    while (eventsShown < updatedEvents.length) {
+      eventsShown = eventsShown + eventsForDay.length;
+      const TripDaysItemElement = new TripDaysItem(eventsToRender[0]);
+      render(this._container, TripDaysItemElement, RenderPosition.BEFOREEND);
+      const tripDaysBlock = TripDaysItemElement.getTripDaysBlock();
+      const newEvents = renderDaysEvents(tripDaysBlock, eventsForDay, this._onDataChange, this._onViewChange);
+      this._showedEventControllers = this._showedEventControllers.concat(newEvents);
+      eventsToRender = eventsToRender.slice(eventsForDay.length);
+      eventsForDay = eventsToRender.filter((event) => isOneDay(event.timeEvent.start, eventsToRender[0].timeEvent.start));
+    }
   }
 
   _removeEvents() {

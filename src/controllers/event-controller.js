@@ -63,6 +63,17 @@ export default class EventController {
     }
   }
 
+  destroy() {
+
+    if (this._eventEditComponent) {
+      remove(this._eventEditComponent);
+    }
+    if (this._eventComponent) {
+      remove(this._eventComponent);
+    }
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
+  }
+
   _replaceEventToEdit() {
     this._onViewChange();
     replace(this._eventEditComponent, this._eventComponent);
