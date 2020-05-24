@@ -1,6 +1,7 @@
 import TripEventsItem from "../components/trip-events-item";
 import EventEditComponent from "../components/event-edit.js";
-import {render, replace, RenderPosition} from "../utils/render.js";
+import {render, replace, remove, RenderPosition} from "../utils/render.js";
+import TripDaysItem from "../components/trip-days-item";
 
 const Mode = {
   DEFAULT: `default`,
@@ -64,7 +65,9 @@ export default class EventController {
   }
 
   destroy() {
-
+    /*if (this._daysItemComponent) {
+      remove(this._daysItemComponent);
+    }*/
     if (this._eventEditComponent) {
       remove(this._eventEditComponent);
     }

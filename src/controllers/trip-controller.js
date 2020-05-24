@@ -1,8 +1,8 @@
-import {DAY_COUNT, POINT_COUNT} from "../components/util";
+
 import EventController from "./event-controller.js";
 import TripDaysItem from "../components/trip-days-item";
 import {render, RenderPosition} from "../utils/render.js";
-import {getExactDay, isOneDay} from "../utils/common";
+import {isOneDay} from "../utils/common";
 
 
 const renderDaysEvents = (eventBlock, events, onDataChange, onViewChange) => {
@@ -49,7 +49,7 @@ export default class TripController {
   _renderEvents(events) {
     let updatedEvents = events;
     let eventsForDay = updatedEvents.filter((event) => isOneDay(event.timeEvent.start, updatedEvents[0].timeEvent.start));
-    //let eventsForDay = events.filter((event) => Math.floor(event.timeEvent.start.getTime() / (1000 * 60 * 60 * 24)) === Math.floor(events[0].timeEvent.start.getTime() / (1000 * 60 * 60 * 24)));
+    // let eventsForDay = events.filter((event) => Math.floor(event.timeEvent.start.getTime() / (1000 * 60 * 60 * 24)) === Math.floor(events[0].timeEvent.start.getTime() / (1000 * 60 * 60 * 24)));
     let eventsToRender = updatedEvents;
     let eventsShown = 0;
 
@@ -65,10 +65,15 @@ export default class TripController {
     }
   }
 
+  _removeDays() {
+
+  }
+
   _removeEvents() {
     this._showedEventControllers.forEach((eventController) => eventController.destroy());
     this._showedEventControllers = [];
   }
+
 
   _updateEvents() {
     this._removeEvents();
