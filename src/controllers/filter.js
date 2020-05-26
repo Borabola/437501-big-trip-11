@@ -22,7 +22,7 @@ export default class FilterController {
     const normalizedEvents = this._eventsModel.getEvents();
     const filters = Object.values(FilterType).map((filterType) => {
       return {
-        name: filterType,
+        name: filterType === this._activeFilterType,
         count: getEventsByFilter(normalizedEvents, filterType).length,
         checked: filterType === this._activeFilterType,
       };
@@ -41,6 +41,8 @@ export default class FilterController {
 
   _onFilterChange(filterType) {
     this._eventsModel.setFilter(filterType);
+    console.log(`filterType в контроллере фильтр`);
+    console.log(filterType);
     this._activeFilterType = filterType;
   }
 

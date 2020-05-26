@@ -65,9 +65,6 @@ export default class EventController {
   }
 
   destroy() {
-    /*if (this._daysItemComponent) {
-      remove(this._daysItemComponent);
-    }*/
     if (this._eventEditComponent) {
       remove(this._eventEditComponent);
     }

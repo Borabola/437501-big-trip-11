@@ -12,12 +12,22 @@ export default class Events {
   }
 
   getEvents() {
+    console.log(`this._activeFilterType from getEvents`);
+    console.log(this._activeFilterType);
     const eventsNormalize = this._events.sort((a, b) => a.timeEvent.start - b.timeEvent.start);
     return getEventsByFilter(eventsNormalize, this._activeFilterType);
   }
 
   getEventsAll() {
-    return this._events;
+
+    const filteredEvents = getEventsByFilter(this._events, this._activeFilterType);
+    console.log(`this._activeFilterType from getEventsAll`);
+    console.log(filteredEvents);
+    if (filteredEvents.length > 1) {
+      return filteredEvents.sort((a, b) => a.timeEvent.start - b.timeEvent.start);
+    } else {
+      return filteredEvents;
+    }
   }
 
   setEvents(events) {

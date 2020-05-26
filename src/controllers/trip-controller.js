@@ -66,7 +66,8 @@ export default class TripController {
   }
 
   _removeDays() {
-
+    const tripDays = document.querySelectorAll(`.trip-days__item`);
+    tripDays.forEach((dayBlock) => dayBlock.remove());
   }
 
   _removeEvents() {
@@ -77,6 +78,7 @@ export default class TripController {
 
   _updateEvents() {
     this._removeEvents();
+    this._removeDays();
     this._renderEvents(this._eventsModel.getEvents());
   }
 

@@ -7,13 +7,14 @@ export const getFavoriteEvents = (events) => {
 };
 
 export const getFutureEvents = (events, date) => {
-  /* const today = new Date();
-  return events.filter((event) => event.timeEvent.start.getTime() > today.getTime());*/
-  return events.filter((event) => isFutureDay(event.timeEvent.start, date));
+  /* const today = new Date();*/
+  return events.filter((event) => event.timeEvent.start.getTime() > date.getTime());
+  //return events.filter((event) => isFutureDay(event.timeEvent.start, date));
 };
 
 export const getPastEvents = (events, date) => {
-  return events.filter((event) => isPastDay(event.timeEvent.start, date));
+  //return events.filter((event) => isPastDay(event.timeEvent.start, date));
+  return events.filter((event) => event.timeEvent.start.getTime() < date.getTime());
 };
 
 export const getEventsInOneDay = (events, date) => {
@@ -22,14 +23,19 @@ export const getEventsInOneDay = (events, date) => {
 
 export const getEventsByFilter = (events, filterType) => {
   const nowDate = new Date();
+  console.log(`filterType`);
+  console.log(filterType);
   switch (filterType) {
     case FilterType.EVERYTHING:
+      console.log(`everything2`);
       return events;
 
     case FilterType.FUTURE:
+      console.log(`future2`);
       return getFutureEvents(events, nowDate);
 
     case FilterType.PAST:
+      console.log(`past2`);
       return getPastEvents(events, nowDate);
   }
 

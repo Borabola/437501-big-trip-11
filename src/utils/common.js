@@ -32,13 +32,13 @@ const isOneDay = (dateA, dateB) => {
 const isFutureDay = (dateA, dateB) => {
   const a = moment(dateA);
   const b = moment(dateB);
-  return a.diff(b, `days`) === 0 && dateA.getDate() > dateB.getDate();
+  return a.diff(b, `days`) !== 0 && dateA.getDate() > dateB.getDate();
 };
 
 const isPastDay = (dateA, dateB) => {
   const a = moment(dateA);
   const b = moment(dateB);
-  return a.diff(b, `days`) === 0 && dateA.getDate() < dateB.getDate();
+  return a.diff(b, `days`) !== 0 && dateA.getDate() < dateB.getDate();
 };
 
 const getExactDay = (date) => {
