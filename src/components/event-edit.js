@@ -1,4 +1,4 @@
-import {PLACE_OFFERS, TRANSPORT__OFFERS} from "../mock/event";
+import {getRandomIntegerNumber, PLACE_OFFERS, TRANSPORT__OFFERS} from "../mock/event";
 // import {startDate} from "./trip-days-item";
 import AbstractSmartComponent from "./abstract-smart-component";
 import {TYPES, CITIES_DESCRIPTION} from "../mock/event";
@@ -224,6 +224,46 @@ const createEventEditTemplate = (event) => {
   );
 };
 
+/*const parseFormData = (formData) => {
+  const repeatingDays = DAYS.reduce((acc, day) => {
+    acc[day] = false;
+    return acc;
+  }, {});
+  const date = formData.get(`date`);
+
+  return {
+    description: formData.get(`text`),
+    color: formData.get(`color`),
+    dueDate: date ? new Date(date) : null,
+    repeatingDays: formData.getAll(`repeat`).reduce((acc, it) => {
+      acc[it] = true;
+      return acc;
+    }, repeatingDays),
+  };
+};*/
+
+const parseFormData = (formData) => {
+  // const date = formData.get(`date`);
+  return {
+    type: {
+      name: formData.get(`name`),
+      /*type: type.type,
+      icon: type.icon,
+      title: type.title*/
+    },
+    city: formData.get(`city`),
+    price: formData.get(`price`),
+    timeEvent: {
+      start: formData.get(`time.start`),
+      finish: formData.get(`time.finish`),
+    },
+    //offers: formData.get(`offers`),
+    //imgs: formData.get(`imgs`),
+    descriptionText: formData.get(`descriptionText`)
+  };
+
+};
+
 export default class EventEdit extends AbstractSmartComponent {
   constructor(event) {
     super();
@@ -232,6 +272,7 @@ export default class EventEdit extends AbstractSmartComponent {
     this._rollupHandler = null;
     this._flatpickrStart = null;
     this._flatpickrFinish = null;
+    this._deleteButtonClickHandler = null;
 
     this._subscribeOnEvents();
     this._applyFlatpickr();
@@ -241,9 +282,20 @@ export default class EventEdit extends AbstractSmartComponent {
     return createEventEditTemplate(this._event);
   }
 
+  removeElement() {
+    if (this._flatpickr) {
+      this._flatpickr.destroy();
+      this._flatpickr = null;
+    }
+
+    super.removeElement();
+  }
+
+
   recoveryListeners() {
     this.setSubmitHandler(this._submitHandler);
     this.setEditButtonClickHandler(this._rollupHandler);
+    this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
     this._subscribeOnEvents();
   }
 
@@ -256,6 +308,13 @@ export default class EventEdit extends AbstractSmartComponent {
     this.rerender();
   }
 
+  getData() {
+    const form = this.getElement().querySelector(`.event__edit`);
+    const formData = new FormData(form);
+
+    return parseFormData(formData);
+  }
+
   setSubmitHandler(handler) {
     if (this.getElement().querySelector(`.event--edit`)) {
       this.getElement().querySelector(`.event--edit`)
@@ -263,6 +322,13 @@ export default class EventEdit extends AbstractSmartComponent {
 
       this._submitHandler = handler;
     }
+  }
+
+  setDeleteButtonClickHandler(handler) {
+    this.getElement().querySelector(`.event__reset-btn`)
+      .addEventListener(`click`, handler);
+
+    this._deleteButtonClickHandler = handler;
   }
 
   setEditButtonClickHandler(handler) {

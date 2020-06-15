@@ -1,13 +1,14 @@
 import TripEventsItem from "../components/trip-events-item";
 import EventEditComponent from "../components/event-edit.js";
 import {render, replace, remove, RenderPosition} from "../utils/render.js";
-import TripDaysItem from "../components/trip-days-item";
+// import TripDaysItem from "../components/trip-days-item";
 
-const Mode = {
+export const Mode = {
   DEFAULT: `default`,
   EDIT: `edit`,
 };
 
+export const EmptyEvent = {};
 
 export default class EventController {
   constructor(container, onDataChange, onViewChange) {
@@ -20,9 +21,10 @@ export default class EventController {
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
-  render(event) {
+  render(event, mode) {
     const oldEventComponent = this._eventComponent;
     const oldEventEditComponent = this._eventEditComponent;
+    this._mode = mode;
 
 
     this._eventComponent = new TripEventsItem(event);
@@ -35,9 +37,13 @@ export default class EventController {
 
     this._eventEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
-      this._replaceEditToEvent();
+      //this._replaceEditToEvent();
+      const data = this._eventEditComponent.getData();
+      this._onDataChange(this, event, data);
       document.removeEventListener(`keydown`, this._onEscKeyDown);
     });
+
+    this._eventEditComponent.setDeleteButtonClickHandler(() => this._onDataChange(this, event, null));
 
     this._eventEditComponent.setEditButtonClickHandler(() => {
       this._replaceEditToEvent();
@@ -53,6 +59,7 @@ export default class EventController {
     if (oldEventEditComponent && oldEventComponent) {
       replace(this._eventComponent, oldEventComponent);
       replace(this._eventEditComponent, oldEventEditComponent);
+      this._replaceEditToEvent();
     } else {
       render(this._container, this._eventComponent, RenderPosition.BEFOREEND);
     }
@@ -83,7 +90,12 @@ export default class EventController {
   _replaceEditToEvent() {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
     this._eventEditComponent.reset();
-    replace(this._eventComponent, this._eventEditComponent);
+    // replace(this._eventComponent, this._eventEditComponent);
+
+    if (document.contains(this._eventEditComponent.getElement())) {
+      replace(this._eventComponent, this._eventEditComponent);
+    }
+
     this._mode = Mode.DEFAULT;
   }
 

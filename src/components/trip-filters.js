@@ -3,7 +3,7 @@ import AbstractComponent from "./abstract-component.js";
 const FILTER_ID_PREFIX = `filter__`;
 
 const getFilterNameById = (id) => {
-  return id.substring(FILTER_ID_PREFIX.length);
+  return id.substring(FILTER_ID_PREFIX.length - 1);
 };
 
 const createTripFiltersTemplate = () => {
@@ -41,9 +41,7 @@ export default class TripFilters extends AbstractComponent {
 
   setFilterChangeHandler(handler) {
     this.getElement().addEventListener(`change`, (evt) => {
-      console.log(`Изменение фильтра`);
       const filterName = getFilterNameById(evt.target.id);
-      console.log(evt.target.id);
       handler(filterName);
     });
   }

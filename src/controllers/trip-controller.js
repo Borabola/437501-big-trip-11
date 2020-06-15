@@ -1,5 +1,5 @@
 
-import EventController from "./event-controller.js";
+import EventController, {Mode as EventControllerMode, EmptyEvent} from "./event-controller.js";
 import TripDaysItem from "../components/trip-days-item";
 import {render, RenderPosition} from "../utils/render.js";
 import {isOneDay} from "../utils/common";
@@ -9,7 +9,7 @@ const renderDaysEvents = (eventBlock, events, onDataChange, onViewChange) => {
   return events.map((event) => {
     const eventController = new EventController(eventBlock, onDataChange, onViewChange);
 
-    eventController.render(event);
+    eventController.render(event, EventControllerMode.DEFAULT);
 
     return eventController;
   });
@@ -83,10 +83,27 @@ export default class TripController {
   }
 
   _onDataChange(eventController, oldData, newData) {
-    const isSuccess = this._eventsModel.updateEvent(oldData.id, newData);
+    if (oldData === EmptyEvent) {
+      this._creatingEvent = null;
+      if (newData === null) {
+        eventController.destroy();
+        this._updateEvents();
+      } else {
+        this._eventsModel.addEvent(newData);
+        eventController.render(newData, EventControllerMode.DEFAULT);
 
-    if (isSuccess) {
-      eventController.render(newData);
+        this._showedEventControllers = [].concat(eventController, this._showedEventControllers);
+
+      }
+    } else if (newData === null) {
+      this._eventsModel.removeEvent(oldData.id);
+      this._updateEvents();
+    } else {
+      const isSuccess = this._eventsModel.updateEvent(oldData.id, newData);
+
+      if (isSuccess) {
+        eventController.render(newData);
+      }
     }
   }
 
