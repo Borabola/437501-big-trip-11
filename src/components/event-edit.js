@@ -244,21 +244,23 @@ const createEventEditTemplate = (event) => {
 
 const parseFormData = (formData) => {
   // const date = formData.get(`date`);
+  const typeValue = formData.get(`event-type`);
+  const typeIndex = TYPES.findIndex((item) => item.name === typeValue);
   return {
     type: {
-      name: formData.get(`name`),
-      /*type: type.type,
-      icon: type.icon,
-      title: type.title*/
+      name: TYPES[typeIndex].name,
+      type: TYPES[typeIndex].type,
+      icon: TYPES[typeIndex].icon,
+      title: TYPES[typeIndex].title
     },
-    city: formData.get(`city`),
-    price: formData.get(`price`),
+    city: formData.get(`event-destination`),
+    price: formData.get(`event-price`),
     timeEvent: {
       start: formData.get(`time.start`),
       finish: formData.get(`time.finish`),
     },
-    //offers: formData.get(`offers`),
-    //imgs: formData.get(`imgs`),
+    // offers: formData.get(`offers`),
+    // imgs: formData.get(`imgs`),
     descriptionText: formData.get(`descriptionText`)
   };
 
@@ -311,7 +313,7 @@ export default class EventEdit extends AbstractSmartComponent {
   getData() {
     const form = this.getElement().querySelector(`.event__edit`);
     const formData = new FormData(form);
-
+    console.log(formData);
     return parseFormData(formData);
   }
 

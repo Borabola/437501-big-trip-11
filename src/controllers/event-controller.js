@@ -1,14 +1,34 @@
 import TripEventsItem from "../components/trip-events-item";
 import EventEditComponent from "../components/event-edit.js";
 import {render, replace, remove, RenderPosition} from "../utils/render.js";
+import {getRandomIntegerNumber} from "../mock/event";
 // import TripDaysItem from "../components/trip-days-item";
 
 export const Mode = {
+  ADDING: `adding`,
   DEFAULT: `default`,
   EDIT: `edit`,
 };
 
-export const EmptyEvent = {};
+export const EmptyEvent = {
+  id: String(new Date() + Math.random()),
+  type: {
+    name: `Taxi`,
+    type: `Transfer`,
+    icon: `img/icons/taxi.png`,
+    title: `Taxi to`
+  },
+  city: ``,
+  price: ``,
+  timeEvent: {
+    start: new Date(),
+    finish: new Date(),
+    durationLine: 0,
+  },
+  offers: [],
+  imgs: [],
+  descriptionText: ``,
+};
 
 export default class EventController {
   constructor(container, onDataChange, onViewChange) {
@@ -56,20 +76,44 @@ export default class EventController {
       }));
     });
 
-    if (oldEventEditComponent && oldEventComponent) {
+    /*if (oldEventEditComponent && oldEventComponent) {
       replace(this._eventComponent, oldEventComponent);
       replace(this._eventEditComponent, oldEventEditComponent);
       this._replaceEditToEvent();
     } else {
       render(this._container, this._eventComponent, RenderPosition.BEFOREEND);
+    }*/
+
+    switch (mode) {
+      case
+        Mode.DEFAULT:
+        if (oldEventEditComponent && oldEventComponent) {
+          replace(this._eventComponent, oldEventComponent);
+          replace(this._eventEditComponent, oldEventEditComponent);
+          this._replaceEditToEvent();
+        } else {
+          render(this._container, this._eventComponent, RenderPosition.BEFOREEND);
+        }
+        break;
+      case
+        Mode.ADDING:
+        if (oldEventEditComponent && oldEventComponent) {
+          remove(oldEventComponent);
+          remove(oldEventEditComponent);
+        }
+        document.addEventListener(`keydown`, this._onEscKeyDown);
+        render(this._container, this._eventEditComponent, RenderPosition.AFTERBEGIN);
+        console.log(this._container);
+        break;
     }
   }
 
+
   setDefaultView() {
-    if (this._mode !== Mode.DEFAULT) {
-      this._replaceEditToEvent();
+      if (this._mode !== Mode.DEFAULT) {
+        this._replaceEditToEvent();
+      }
     }
-  }
 
   destroy() {
     if (this._eventEditComponent) {

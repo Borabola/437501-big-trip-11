@@ -2,6 +2,7 @@
 import EventController, {Mode as EventControllerMode, EmptyEvent} from "./event-controller.js";
 import TripDaysItem from "../components/trip-days-item";
 import {render, RenderPosition} from "../utils/render.js";
+import TripEventsItem from "../components/trip-events-item";
 import {isOneDay} from "../utils/common";
 
 
@@ -15,12 +16,13 @@ const renderDaysEvents = (eventBlock, events, onDataChange, onViewChange) => {
   });
 };
 
-
 export default class TripController {
   constructor(container, eventsModel) {
     this._container = container;
     this._eventsModel = eventsModel;
+    this._eventsComponent = new TripEventsItem();
     this._showedEventControllers = [];
+    this._creatingEvent = null;
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
@@ -29,6 +31,9 @@ export default class TripController {
   }
   render() {
     let events = this._eventsModel.getEvents();
+    console.log(events);
+    console.log(`this._container`);
+    console.log(this._container);
     let eventsForDay = events.filter((event) => isOneDay(event.timeEvent.start, events[0].timeEvent.start));
     // let eventsForDay = events.filter((event) => Math.floor(event.timeEvent.start.getTime() / (1000 * 60 * 60 * 24)) === Math.floor(events[0].timeEvent.start.getTime() / (1000 * 60 * 60 * 24)));
     let eventsToRender = events;
@@ -65,6 +70,17 @@ export default class TripController {
     }
   }
 
+  createEvent() {
+    if (this._creatingEvent) {
+      return;
+    }
+
+    //const eventListElement = this._eventsComponent.getElement();
+    //console.log(eventListElement);
+    this._creatingEvent = new EventController(this._container, this._onDataChange, this._onViewChange);
+    this._creatingEvent.render(EmptyEvent, EventControllerMode.ADDING);
+  }
+
   _removeDays() {
     const tripDays = document.querySelectorAll(`.trip-days__item`);
     tripDays.forEach((dayBlock) => dayBlock.remove());
@@ -86,6 +102,7 @@ export default class TripController {
     if (oldData === EmptyEvent) {
       this._creatingEvent = null;
       if (newData === null) {
+        console.log(`нет новго`);
         eventController.destroy();
         this._updateEvents();
       } else {

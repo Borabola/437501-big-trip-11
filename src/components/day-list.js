@@ -1,22 +1,14 @@
-import {DAY_COUNT} from "./util.js";
-import {POINT_COUNT} from "./util.js";
-import {generateEvents} from "../mock/event";
-import {createTripEventsItemTemplate} from "./trip-events-item";
-import {createTripDaysItemTemplate} from "./trip-days-item.js";
+import AbstractComponent from "./abstract-component.js";
 
-export const createDayListTemplate = () => {
-  let dayContent = ``;
-
-  for (let i = 0; i < DAY_COUNT; i++) {
-    const events = generateEvents(POINT_COUNT);
-    let pointsContent = ``;
-    for (let j = 0; j < POINT_COUNT; j++) {
-      pointsContent += createTripEventsItemTemplate(events[j]);
-    }
-    dayContent += createTripDaysItemTemplate(pointsContent, i);
-  }
-
+const createDayListTemplate = () => {
   return (
-    `<ul class="trip-days">${dayContent}</ul>`
+    `<ul class="trip-days"></ul>`
   );
 };
+
+export default class DayList extends AbstractComponent {
+  getTemplate() {
+    return createDayListTemplate();
+  }
+}
+
