@@ -252,6 +252,7 @@ const generateEvents = (count) => {
 
 export {
   TYPES,
+  CITIES,
   CITIES_DESCRIPTION,
   generateStartDate,
   generateEvent,

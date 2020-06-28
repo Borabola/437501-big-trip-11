@@ -110,10 +110,10 @@ export default class EventController {
 
 
   setDefaultView() {
-      if (this._mode !== Mode.DEFAULT) {
-        this._replaceEditToEvent();
-      }
+    if (this._mode !== Mode.DEFAULT) {
+      this._replaceEditToEvent();
     }
+  }
 
   destroy() {
     if (this._eventEditComponent) {

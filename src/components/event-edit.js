@@ -1,13 +1,26 @@
-import {getRandomIntegerNumber, PLACE_OFFERS, TRANSPORT__OFFERS} from "../mock/event";
+import {getRandomIntegerNumber, PLACE_OFFERS, TRANSPORT__OFFERS, CITIES} from "../mock/event";
 // import {startDate} from "./trip-days-item";
 import AbstractSmartComponent from "./abstract-smart-component";
 import {TYPES, CITIES_DESCRIPTION} from "../mock/event";
 import {debounce, formatTime, formatDate} from "../utils/common";
+
 import flatpickr from "flatpickr";
 
 import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/material_blue.css";
 
+const createCityItem = (city) => {
+  return (
+    `<option value="${city}">${city}</option>`);
+};
+
+const createDataList = () => {
+  let citiesList = ` `;
+  for (const it of CITIES) {
+    citiesList += createCityItem(it);
+  }
+  return citiesList;
+};
 
 const createOfferItem = (event, offer) => {
   let isChecked = ``;
@@ -83,6 +96,7 @@ const createEventEditTemplate = (event) => {
   const startTime = formatTime(event.timeEvent.start);
   const finishDate = formatDate(event.timeEvent.finish);
   const finishTime = formatTime(event.timeEvent.finish);
+  const citiesList = createDataList();
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
       <header class="event__header">
@@ -160,10 +174,11 @@ const createEventEditTemplate = (event) => {
           </label>
           <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${event.city}" list="destination-list-1">
           <datalist id="destination-list-1">
-            <option value="Amsterdam"></option>
+            ${citiesList}
+            <!--<option value="Amsterdam"></option>
             <option value="Geneva"></option>
             <option value="Chamonix"></option>
-            <option value="Saint Petersburg"></option>
+            <option value="Saint Petersburg"></option>-->
           </datalist>
         </div>
 
@@ -184,7 +199,7 @@ const createEventEditTemplate = (event) => {
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${event.price}">
+          <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${event.price}">
         </div>
 
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -256,14 +271,34 @@ const parseFormData = (formData) => {
     city: formData.get(`event-destination`),
     price: formData.get(`event-price`),
     timeEvent: {
-      start: formData.get(`time.start`),
-      finish: formData.get(`time.finish`),
+      start: new Date(formData.get(`event-start-time`)), //formData.get(`time.start`),
+      finish: new Date(formData.get(`event-end-time`)), //formData.get(`time.finish`),
     },
     // offers: formData.get(`offers`),
     // imgs: formData.get(`imgs`),
     descriptionText: formData.get(`descriptionText`)
   };
 
+};
+
+const parseData = (formData) => {
+  const eventDestination = formData.get(`event-destination`);
+  const eventDescription = cities[eventDestination].description;
+  const eventPhotos = cities[eventDestination].photo;
+  const eventType = formData.get(`event-type`);
+  const eventTypeUpper = eventType[0].toUpperCase() + eventType.slice(1);
+  const eventOffers = getOffers(eventTypeUpper);
+
+  return {
+    eventPrice: Number(formData.get(`event-price`)),
+    type: eventTypeUpper,
+    destination: eventDestination,
+    offer: eventOffers,
+    start: new Date(formData.get(`event-start-time`)),
+    end: new Date(formData.get(`event-end-time`)),
+    description: eventDescription,
+    photos: eventPhotos,
+  };
 };
 
 export default class EventEdit extends AbstractSmartComponent {
