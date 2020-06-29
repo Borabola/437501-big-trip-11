@@ -8,6 +8,7 @@ import flatpickr from "flatpickr";
 
 import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/material_blue.css";
+import {Mode} from "../controllers/event-controller";
 
 const createCityItem = (city) => {
   return (
@@ -88,8 +89,32 @@ const getNewDescription = (cityName) => {
   return ``;
 };
 
+const createAdBtns = (mode) => {
+  //const isDefaultMode = !!mode.DEFAULT;
+  //console.log(isDefaultMode);
+  console.log(`mode in createAdBtns`);
+  console.log(mode);
+  if (mode === `default`) {
+    return (`<input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" checked>
+      <label class="event__favorite-btn" for="event-favorite-1">
+        <span class="visually-hidden">Add to favorite</span>
+        <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
+          <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
+        </svg>
+      </label>
 
-const createEventEditTemplate = (event) => {
+      <button class="event__rollup-btn" type="button">
+        <span class="visually-hidden">Open event</span>
+      </button>`);
+  } else {
+    return (``);
+  }
+};
+
+
+const createEventEditTemplate = (event, mode) => {
+  console.log(`mode`);
+  console.log(mode);
   const offerList = createOfferList(event);
   const imgList = createImgsListTeplate(event);
   const startDate = formatDate(event.timeEvent.start);
@@ -97,6 +122,7 @@ const createEventEditTemplate = (event) => {
   const finishDate = formatDate(event.timeEvent.finish);
   const finishTime = formatTime(event.timeEvent.finish);
   const citiesList = createDataList();
+  const additionalButtons = createAdBtns(mode);
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
       <header class="event__header">
@@ -204,18 +230,8 @@ const createEventEditTemplate = (event) => {
 
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
         <button class="event__reset-btn" type="reset">Delete</button>
+        ${additionalButtons}
 
-        <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" checked>
-        <label class="event__favorite-btn" for="event-favorite-1">
-          <span class="visually-hidden">Add to favorite</span>
-          <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
-            <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
-          </svg>
-        </label>
-
-        <button class="event__rollup-btn" type="button">
-          <span class="visually-hidden">Open event</span>
-        </button>
 
       </header>
       <section class="event__details">
@@ -238,24 +254,6 @@ const createEventEditTemplate = (event) => {
     </form>`
   );
 };
-
-/*const parseFormData = (formData) => {
-  const repeatingDays = DAYS.reduce((acc, day) => {
-    acc[day] = false;
-    return acc;
-  }, {});
-  const date = formData.get(`date`);
-
-  return {
-    description: formData.get(`text`),
-    color: formData.get(`color`),
-    dueDate: date ? new Date(date) : null,
-    repeatingDays: formData.getAll(`repeat`).reduce((acc, it) => {
-      acc[it] = true;
-      return acc;
-    }, repeatingDays),
-  };
-};*/
 
 const parseFormData = (formData) => {
   // const date = formData.get(`date`);
@@ -281,30 +279,11 @@ const parseFormData = (formData) => {
 
 };
 
-const parseData = (formData) => {
-  const eventDestination = formData.get(`event-destination`);
-  const eventDescription = cities[eventDestination].description;
-  const eventPhotos = cities[eventDestination].photo;
-  const eventType = formData.get(`event-type`);
-  const eventTypeUpper = eventType[0].toUpperCase() + eventType.slice(1);
-  const eventOffers = getOffers(eventTypeUpper);
-
-  return {
-    eventPrice: Number(formData.get(`event-price`)),
-    type: eventTypeUpper,
-    destination: eventDestination,
-    offer: eventOffers,
-    start: new Date(formData.get(`event-start-time`)),
-    end: new Date(formData.get(`event-end-time`)),
-    description: eventDescription,
-    photos: eventPhotos,
-  };
-};
-
 export default class EventEdit extends AbstractSmartComponent {
-  constructor(event) {
+  constructor(event, mode) {
     super();
     this._event = event;
+    this._mode = mode;
     this._submitHandler = null;
     this._rollupHandler = null;
     this._flatpickrStart = null;
@@ -316,7 +295,7 @@ export default class EventEdit extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createEventEditTemplate(this._event);
+    return createEventEditTemplate(this._event, this._mode);
   }
 
   removeElement() {
@@ -369,15 +348,19 @@ export default class EventEdit extends AbstractSmartComponent {
   }
 
   setEditButtonClickHandler(handler) {
-    this.getElement().querySelector(`.event__rollup-btn`)
-      .addEventListener(`click`, handler);
+    if (this.getElement().querySelector(`.event__rollup-btn`)) {
+      this.getElement().querySelector(`.event__rollup-btn`)
+        .addEventListener(`click`, handler);
 
-    this._rollupHandler = handler;
+      this._rollupHandler = handler;
+    }
   }
 
   setFavoritesButtonClickHandler(handler) {
-    this.getElement().querySelector(`.event__favorite-btn`)
-      .addEventListener(`click`, handler);
+    if (this.getElement().querySelector(`.event__favorite-btn`)) {
+      this.getElement().querySelector(`.event__favorite-btn`)
+        .addEventListener(`click`, handler);
+    }
   }
 
   _subscribeOnEvents() {

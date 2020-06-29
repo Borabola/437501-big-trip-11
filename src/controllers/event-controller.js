@@ -1,8 +1,6 @@
 import TripEventsItem from "../components/trip-events-item";
 import EventEditComponent from "../components/event-edit.js";
 import {render, replace, remove, RenderPosition} from "../utils/render.js";
-import {getRandomIntegerNumber} from "../mock/event";
-// import TripDaysItem from "../components/trip-days-item";
 
 export const Mode = {
   ADDING: `adding`,
@@ -48,7 +46,7 @@ export default class EventController {
 
 
     this._eventComponent = new TripEventsItem(event);
-    this._eventEditComponent = new EventEditComponent(event);
+    this._eventEditComponent = new EventEditComponent(event, mode);
 
     this._eventComponent.setEditButtonClickHandler(() => {
       this._replaceEventToEdit();
