@@ -71,6 +71,7 @@ export default class TripController {
   }
 
   createEvent() {
+    console.log(this._creatingEvent);
     if (this._creatingEvent) {
       return;
     }

@@ -1,6 +1,7 @@
 import TripEventsItem from "../components/trip-events-item";
 import EventEditComponent from "../components/event-edit.js";
 import {render, replace, remove, RenderPosition} from "../utils/render.js";
+import {restoreNewEventBtn} from "../components/util";
 
 export const Mode = {
   ADDING: `adding`,
@@ -145,6 +146,10 @@ export default class EventController {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 
     if (isEscKey) {
+      if (this._mode === Mode.ADDING) {
+        this._onDataChange(this, EmptyEvent, null);
+        restoreNewEventBtn();
+      }
       this._replaceEditToEvent();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
     }

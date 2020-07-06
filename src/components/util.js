@@ -8,4 +8,9 @@ const createElement = (template) => {
   return newElement.firstChild;
 };
 
-export {DAY_COUNT, POINT_COUNT, createElement};
+const restoreNewEventBtn = () => {
+  const newEventBtn = document.querySelector(`.trip-main__event-add-btn`);
+  newEventBtn.disabled = false;
+};
+
+export {DAY_COUNT, POINT_COUNT, createElement, restoreNewEventBtn};

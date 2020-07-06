@@ -324,6 +324,12 @@ export default class EventEdit extends AbstractSmartComponent {
     this.rerender();
   }
 
+
+  /*restoreNewEventBtn() {
+    const newEventBtn = document.querySelector(`.trip-main__event-add-btn`);
+    newEventBtn.disabled = false;
+  }*/
+
   getData() {
     const form = this.getElement().querySelector(`.event__edit`);
     const formData = new FormData(form);
